@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: Container(),
+      home: const LoginScreen(),
     );
   }
 }
