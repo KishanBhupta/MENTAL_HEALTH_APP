@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_helth_wellness/utils/appFonts.dart';
 
 class AppText extends StatelessWidget {
   const AppText(
@@ -11,7 +12,7 @@ class AppText extends StatelessWidget {
       this.textAlign,
       this.color,
       this.fontWeight,
-      this.fontStyle, this.textDecoration});
+      this.fontStyle, this.textDecoration, this.fontFamily});
 
   final String text;
 
@@ -24,6 +25,7 @@ class AppText extends StatelessWidget {
   final FontWeight? fontWeight;
   final FontStyle? fontStyle;
   final TextDecoration? textDecoration;
+  final String? fontFamily;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class AppText extends StatelessWidget {
           decoration:textDecoration,
           color: color ?? Colors.black,
           fontSize: fontSize ?? 14,
+          fontFamily: fontFamily??AppFonts.publicSans,
           fontWeight: fontWeight ?? FontWeight.w400,
           fontStyle: fontStyle ?? FontStyle.normal,
           letterSpacing: letterSpacing,

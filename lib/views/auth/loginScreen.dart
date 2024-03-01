@@ -1,8 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:mental_helth_wellness/customWidgets/appButton.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
+import 'package:mental_helth_wellness/customWidgets/appTextField.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
+import 'package:mental_helth_wellness/utils/appAnimations.dart';
+import 'package:mental_helth_wellness/utils/appColors.dart';
+import 'package:mental_helth_wellness/utils/appFonts.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
+import 'package:mental_helth_wellness/views/auth/signupScreen.dart';
+
+import '../../utils/appEnums.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,8 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   //text fields controllers
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-
+  //password toggle
+  bool isPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,105 +38,128 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Form(
           key:_fromKey,
           child: Container(
-            padding: EdgeInsets.all(Spacing.getDefaultSpacing(context)),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                // login header title starts
-                Container(
-                  margin: const EdgeInsets.only(top: 40),
-                  alignment: Alignment.center,
-                  child: const AppText(
-                      text: "How are you doing outside ? Come inside..",
-                      fontSize: 28,
-                      fontWeight: FontWeight.w800,
+            padding: EdgeInsets.symmetric(horizontal:Spacing.getDefaultSpacing(context)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // login header title starts
+                  Container(
+                    margin: const EdgeInsets.only(top: 40),
+                    alignment: Alignment.center,
+                    child: const AppText(
+                        text: "How are you doing outside ? Come inside..",
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-
-                CSpace(height: 40,),
-                
-                const AppText(text: "Sign In",fontSize: 32,),
-                
-                CSpace(height: 40,),
-            
-                Column(
-                  children: [
-                    CSpace(height: Spacing.getDefaultSpacing(context)),
-
-                    // email text field
-                    TextFormField(
+              
+                  const CSpace(height: 40,),
+                  
+                  AppText(text: "Sign In",fontSize: 48,fontWeight: FontWeight.w700,color: AppColors().primaryColor),
+                  
+                  const CSpace(height: 40,),
+              
+                  Column(
+                    children: [
+                      CSpace(height: Spacing.getDefaultSpacing(context)),
+              
+                      // email text field
+                      AppTextField(
+                        hintText: "Enter Email",
                         controller: emailController,
-                        decoration:InputDecoration(
-                          hintText:"Enter Email Address",
-                        )
-                    ),
-                    CSpace(height: Spacing.getDefaultSpacing(context)),
-
-                    // password text field
-                    TextFormField(
-                        controller: passwordController,
-                        decoration:const InputDecoration(
-                          hintText:"Enter Email Address",
-                        )
-                    ),
-                    CSpace(height: Spacing.getDefaultSpacing(context)),
-
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: (){},
-                        child: const AppText(
-                          text: "Forgot Password?",
-                          textDecoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-
-                    // login button
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          )
-                        ),
-                        onPressed: (){
-
+                        validator: (email){
+                          return null;
                         },
-                        child: const AppText(
-                            text: "Login",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        isBorderEnabled: true,
+                        borderType: BorderType.rectangleBorder,
+                        prefixIcon:Icon(Icons.email_outlined,color: AppColors().primaryColor),
+                      ),
+                      CSpace(height: Spacing.getDefaultSpacing(context)),
+              
+                      // password text field
+                      AppTextField(
+                        hintText: "Enter Password",
+                        isPassword: isPassword,
+                        controller: passwordController,
+                        validator: (password) {
+                          return null;
+                        },
+                        isBorderEnabled: true,
+                        borderType: BorderType.rectangleBorder,
+                        suffixIcon: IconButton(
+                            onPressed: (){
+                              setState(() {
+                                isPassword = !isPassword;
+                              });
+                            },
+                            icon: Icon(
+                              color: Colors.black54,
+                              isPassword ? Icons.remove_red_eye_outlined : CupertinoIcons.eye_slash,
+                            ),
+                        ),
+                        prefixIcon: Icon(Icons.lock_outline,color: AppColors().primaryColor),
+                      ),
+                      CSpace(height: Spacing.getDefaultSpacing(context)),
+              
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: (){},
+                          child: const AppText(
+                            text: "Forgot Password?",
+                            fontWeight: FontWeight.w500,
+                            textDecoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
-                    ),
-
-                    CSpace(height: 40,),
-
-                    RichText(
-                        text: const TextSpan(
-                          text: "Don't have an account ? ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Create Account",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.black,
-                                fontSize: 16
+              
+                      // login button
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: AppButton(
+                          onPressed: (){},
+                          text:"Login"
+                        )
+                      ),
+              
+                      const CSpace(height: 40,),
+              
+                      RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: "Don't have an account ?",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontFamily: AppFonts.publicSans,
+                              fontWeight: FontWeight.w500
+                            ),
+                            children: [
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: TextButton(
+                                  onPressed: (){
+                                    Get.to(()=>const SignUpScreen(),
+                                        transition: AppAnimations.appNavigationTransition,
+                                        duration: AppAnimations.appNavigationTransitionDuration,
+                                    );
+                                  },
+                                  child: const AppText(
+                                    text: "Create Account",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    textDecoration: TextDecoration.underline,
+                                  ),
+                                )
                               )
-                            )
-                          ]
-                        ),
-                    )
-                  ],
-                )
-              ],
+                            ]
+                          ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

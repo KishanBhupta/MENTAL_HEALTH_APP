@@ -3,5 +3,5 @@
 * */
 
 class AppFonts {
-/* [ static const String publicSans = "public-sans" ] */
+   static const String publicSans = "open-sans";
 }
