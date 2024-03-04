@@ -31,9 +31,14 @@ class ApiController {
 
   // function to login user
   Future<Response> login({required Map<String, dynamic> data}) async {
-    var token = await authToken();
-    var headers = {"Authorization": token, "Accept": accept};
-    Response response = await dio.post(ApiUrls.loginPath,data: data, options: Options(headers: headers, contentType: accept));
+    var headers = {"Accept": accept};
+    Response response = await dio.post(ApiUrls.loginPath,data: data,options: Options(headers: headers, contentType: accept));
+    return response;
+  }
+
+  Future<Response> registerUser({required Map<String, Object> data}) async {
+    var headers = {"Accept":accept};
+    Response response = await dio.post(ApiUrls.registerPath,data:data, options: Options(headers: headers, contentType: accept));
     return response;
   }
 }

@@ -1,7 +1,9 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:mental_helth_wellness/views/onBoarding/onBoardingMainScreen.dart';
+import 'package:mental_helth_wellness/controllers/authController.dart';
 
 import '../../customWidgets/appButton.dart';
 import '../../customWidgets/appText.dart';
@@ -27,12 +29,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   bool isPassword = true;
   bool isConfirmPassword = true;
 
+  AuthController authController = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +76,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       AppTextField(
                         hintText: "Enter First Name",
                         controller: firstNameController,
-                        validator: (email){
+                        validator: (firstName){
+                          if(firstName.toString().isEmpty){
+                            return "Please enter an your first name.";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
@@ -85,7 +92,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       AppTextField(
                         hintText: "Enter Last Name",
                         controller: lastNameController,
-                        validator: (email){
+                        validator: (lastName){
+                          if(lastName.toString().isEmpty){
+                            return "Please enter your last name.";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
@@ -99,11 +109,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintText: "Enter Email",
                         controller: emailController,
                         validator: (email){
+                          if(email.toString().isEmpty){
+                            return "Please enter an email address.";
+                          }
+                          if(!EmailValidator.validate(email.toString())){
+                            return "Please enter a valid email address.";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
                         borderType: BorderType.rectangleBorder,
                         prefixIcon:Icon(Icons.email_outlined,color: AppColors().primaryColor),
+                      ),
+                      CSpace(height: Spacing.getDefaultSpacing(context)),
+
+                      // phone number
+                      AppTextField(
+                        hintText: "Enter Phone Number",
+                        controller: phoneNumberController,
+                        validator: (phone){
+                          if(phone.toString().isEmpty){
+                            return "Please enter your phone number.";
+                          }
+                          if(!RegExp(r"\d{10}").hasMatch(phone.toString())){
+                            return "Phone number must be of 10 digit";
+                          }
+                          return null;
+                        },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        isBorderEnabled: true,
+                        borderType: BorderType.rectangleBorder,
+                        prefixIcon:Icon(Icons.call_outlined,color: AppColors().primaryColor),
                       ),
                       CSpace(height: Spacing.getDefaultSpacing(context)),
 
@@ -113,6 +151,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         isPassword: isPassword,
                         controller: passwordController,
                         validator: (password) {
+                          if(password.toString().isEmpty){
+                            return "Please enter a password.";
+                          }
+                          if(password.toString().length < 6){
+                            return "Password must be 6 character long.";
+                          }
+                          if(!RegExp(r"(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])").hasMatch(password.toString())){
+                            return "Password must contain 1 Capital character and 1 Digit";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
@@ -137,7 +184,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintText: "Confirm Password",
                         isPassword: isConfirmPassword,
                         controller: confirmPasswordController,
-                        validator: (password) {
+                        validator: (confirmPassword) {
+                          if(confirmPassword.toString().isEmpty){
+                            return "Please enter confirmation password";
+                          }
+                          if(confirmPassword.toString().compareTo(passwordController.text.toString())!=0){
+                            return "Confirm password does not match the password.";
+                          }
                           return null;
                         },
                         suffixIcon: IconButton(
@@ -162,9 +215,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(
                           width: double.maxFinite,
                           child: AppButton(
-                            onPressed: (){
-                              // TODO :START ONBOARDING FLOW
-                              Get.to(()=>const OnBoardingMainScreen());
+                            onPressed: () async {
+
+                              if(_formKey.currentState!.validate()){
+                                await authController.register(
+                                    email: emailController.text,
+                                    firstName: firstNameController.text,
+                                    lastName: lastNameController.text,
+                                    password: passwordController.text,
+                                    phoneNumber: phoneNumberController.text
+                                );
+                              }
+
                             },
                             text:"Sign Up",
                           )

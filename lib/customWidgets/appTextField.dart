@@ -12,7 +12,7 @@ class AppTextField extends StatelessWidget {
   final bool? isDense;
   final bool? isCollapsed;
   final bool? isPassword;
-  final int? maxLines;
+  final int? maxLines, maxLength;
   final String? fontFamily;
 
   //border policy booleans
@@ -104,7 +104,7 @@ class AppTextField extends StatelessWidget {
     this.suffix,
     this.prefix,
     this.suffixIcon,
-    this.prefixIcon}
+    this.prefixIcon, this.maxLength}
       ):assert(
       ((isConsistentBorderColor != null && consistentBorderColor != null) || (isConsistentBorderColor == null && consistentBorderColor == null))
           &&
@@ -123,6 +123,7 @@ class AppTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       obscureText: isPassword??false,
       maxLines: maxLines??1,
+      maxLength: maxLength,
       style: TextStyle(
         fontSize: textFontSize,
         fontWeight: textFontWeight,
