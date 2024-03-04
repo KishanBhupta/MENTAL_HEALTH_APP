@@ -3,5 +3,7 @@
 * */
 
 class AppConst {
-  
+  // to access the access token in the application
+  String? currentAccessToken;
+
 }

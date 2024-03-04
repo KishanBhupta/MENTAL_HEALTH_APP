@@ -1,8 +1,10 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:mental_helth_wellness/controllers/authController.dart';
 import 'package:mental_helth_wellness/customWidgets/appButton.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/customWidgets/appTextField.dart';
@@ -10,10 +12,12 @@ import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
 import 'package:mental_helth_wellness/utils/appAnimations.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
 import 'package:mental_helth_wellness/utils/appFonts.dart';
+import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 import 'package:mental_helth_wellness/views/auth/signupScreen.dart';
 
 import '../../utils/appEnums.dart';
+import '../../utils/cacheKeys.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,6 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   //password toggle
   bool isPassword = true;
+  // controllers
+  AuthController authController = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +75,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Enter Email",
                         controller: emailController,
                         validator: (email){
+                          if(email.toString().isEmpty){
+                            return "Please enter an email address";
+                          }
+                          if(!EmailValidator.validate(email.toString())){
+                            return "Please enter a valid email address";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
@@ -83,6 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         isPassword: isPassword,
                         controller: passwordController,
                         validator: (password) {
+                          if(password.toString().isEmpty){
+                            return "Please enter your password";
+                          }
+                          if(password.toString().length > 8 || password.toString().length < 6){
+                            return "Password must be 6 to 8 character long";
+                          }
                           return null;
                         },
                         isBorderEnabled: true,
@@ -118,7 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: double.maxFinite,
                         child: AppButton(
-                          onPressed: (){},
+                          onPressed: () async {
+                            if(_fromKey.currentState!.validate()){
+                              await authController.login(email: emailController.text, password: passwordController.text);
+                            }
+                          },
                           text:"Login"
                         )
                       ),

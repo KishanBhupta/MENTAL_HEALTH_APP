@@ -3,7 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
 
-void main() {
+import 'utils/localStorage.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage().initializeLocalStorage();
   runApp(const MyApp());
 }
 
