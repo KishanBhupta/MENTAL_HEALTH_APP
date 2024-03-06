@@ -24,10 +24,10 @@ class ApiController {
   static String accept = "application/json";
 
   // function to get user's access token
-  // Future<String?> authToken() async {
-  //   String? token = LocalStorage().getStringValue(key: CacheKeys.accessToken);
-  //   return "Bearer $token";
-  // }
+  Future<String?> authToken() async {
+    String? token = LocalStorage().getStringValue(key: CacheKeys.accessToken);
+    return "Bearer $token";
+  }
 
   // function to login user
   Future<Response> login({required Map<String, dynamic> data}) async {
