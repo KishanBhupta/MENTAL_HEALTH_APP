@@ -27,6 +27,8 @@ class AuthController {
       AppConst().currentAccessToken = response.data['token'];
       Get.to(()=>const HomeScreen());
     }
+
+
     AppMethods.dismissLoading();
   }
 
