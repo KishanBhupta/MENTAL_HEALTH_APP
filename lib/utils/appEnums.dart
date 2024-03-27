@@ -5,3 +5,7 @@ enum BorderType {
 enum ImageType {
   networkImage , assetImage;
 }
+
+enum BottomBarScreens {
+  home , profile , chat , addPost;
+}

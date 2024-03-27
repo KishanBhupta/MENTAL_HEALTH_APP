@@ -9,6 +9,10 @@ class LocalStorage {
     _preferences = await SharedPreferences.getInstance();
   }
 
+  bool hasKey({required String key}) {
+    return _preferences.containsKey(key);
+  }
+
   // function to get string values
   String? getStringValue({required String key}) {
     return _preferences.getString(key);

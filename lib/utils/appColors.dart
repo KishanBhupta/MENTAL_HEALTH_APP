@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  Color primaryColor = const Color(0xFF15F5BA);
+  Color primaryColor = const Color(0xFF4db4f5);
   Color secondaryColor = Colors.grey.shade300;
   Color splashColor = const Color(0xFFCDF5FD);
 }

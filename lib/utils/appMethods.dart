@@ -29,4 +29,12 @@ class AppMethods {
     EasyLoading.dismiss(animation:true);
   }
 
+  static void showToast({ required String message,bool isError = false}) {
+    if(isError){
+      EasyLoading.showError(message);
+    }else{
+      EasyLoading.showInfo(message);
+    }
+  }
+
 }

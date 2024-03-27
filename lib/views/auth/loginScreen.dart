@@ -30,8 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _fromKey = GlobalKey<FormState>();
   //text fields controllers
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: 'a@gmail.com');
+  TextEditingController passwordController = TextEditingController(text: 'Aa123123');
   //password toggle
   bool isPassword = true;
   // controllers

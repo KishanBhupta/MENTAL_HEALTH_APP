@@ -6,8 +6,7 @@ import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiController {
-  /*
-  * */
+
   static Dio dio = Dio()
     ..interceptors.add(PrettyDioLogger(
         compact: false,
@@ -39,6 +38,13 @@ class ApiController {
   Future<Response> registerUser({required Map<String, Object> data}) async {
     var headers = {"Accept":accept};
     Response response = await dio.post(ApiUrls.registerPath,data:data, options: Options(headers: headers, contentType: accept));
+    return response;
+  }
+
+  Future<Response> getCurrentLoggedInUser() async {
+    var headers = {"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    Response response = await dio.get(ApiUrls.getCurrentUserPath, options: Options(headers: headers));
     return response;
   }
 }

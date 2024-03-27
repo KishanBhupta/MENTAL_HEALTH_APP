@@ -32,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
 
   bool isPassword = true;
   bool isConfirmPassword = true;
@@ -70,6 +71,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   Column(
                     children: [
+                      CSpace(height: Spacing.getDefaultSpacing(context)),
+
+                      // user name text field
+                      AppTextField(
+                        hintText: "Enter User Name",
+                        controller: userNameController,
+                        validator: (lastName){
+                          if(lastName.toString().isEmpty){
+                            return "Please enter your user name.";
+                          }
+                          return null;
+                        },
+                        isBorderEnabled: true,
+                        borderType: BorderType.rectangleBorder,
+                        prefixIcon:Icon(Icons.person_2_outlined,color: AppColors().primaryColor),
+                      ),
                       CSpace(height: Spacing.getDefaultSpacing(context)),
 
                       // first name text field
@@ -219,6 +236,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               if(_formKey.currentState!.validate()){
                                 await authController.register(
+                                    userName: userNameController.text,
                                     email: emailController.text,
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
