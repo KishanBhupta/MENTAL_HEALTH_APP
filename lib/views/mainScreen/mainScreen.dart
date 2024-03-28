@@ -7,9 +7,10 @@ import 'package:mental_helth_wellness/utils/appEnums.dart';
 import 'package:mental_helth_wellness/views/addPost/appPostScreen.dart';
 import 'package:mental_helth_wellness/views/chat/chatScreen.dart';
 import 'package:mental_helth_wellness/views/profile/profileScreen.dart';
+import 'package:mental_helth_wellness/views/search/searchScreen.dart';
 
+import '../post/postScreen.dart';
 import 'bottomNavigationBar.dart';
-import 'homeScreen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -27,10 +28,11 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: GetBuilder<BottomNavigationController>(
         builder: (controller) {
-          return controller.screen == BottomBarScreens.home ? const HomeScreen() :
+          return controller.screen == BottomBarScreens.home ? const PostScreen() :
           controller.screen == BottomBarScreens.chat ? const ChatScreen() :
+          controller.screen == BottomBarScreens.search ? const SearchScreen() :
           controller.screen == BottomBarScreens.addPost ? const AddPostScreen() :
-          controller.screen == BottomBarScreens.profile ? const ProfileScreen() : const HomeScreen()
+          controller.screen == BottomBarScreens.profile ? const ProfileScreen() : const PostScreen()
           ;
         },
       ),

@@ -34,6 +34,8 @@ class AppImage extends StatelessWidget {
       case ImageType.assetImage:
         return Image.asset(
             imagePath,
+          height: height,
+          width: width,
           errorBuilder: (context, error, stackTrace) => errorWidget(),
         );
       default:

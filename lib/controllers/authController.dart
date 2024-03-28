@@ -7,7 +7,7 @@ import 'package:mental_helth_wellness/utils/appMethods.dart';
 import 'package:mental_helth_wellness/utils/cacheKeys.dart';
 import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
-import 'package:mental_helth_wellness/views/home/mainScreen.dart';
+import 'package:mental_helth_wellness/views/mainScreen/mainScreen.dart';
 
 import '../models/userModel.dart';
 import '../utils/appConst.dart';
@@ -23,10 +23,9 @@ class AuthController {
     api.Response response = await ApiController().login(data: data);
     if(response.statusCode == 200){
       userModel = UserModel.fromJSON(response.data['user']);
-      print("ATOKEN : ${response.data['token']}");
       await LocalStorage().setStringValue(key: CacheKeys.accessToken, value: response.data['token']);
       AppConst().currentAccessToken = response.data['token'];
-      Get.to(()=>const MainScreen());
+      Get.offAll(()=>const MainScreen());
     }
     AppMethods.dismissLoading();
   }

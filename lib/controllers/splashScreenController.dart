@@ -8,7 +8,7 @@ import 'package:mental_helth_wellness/utils/appConst.dart';
 import 'package:mental_helth_wellness/utils/cacheKeys.dart';
 import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
-import 'package:mental_helth_wellness/views/home/mainScreen.dart';
+import 'package:mental_helth_wellness/views/mainScreen/mainScreen.dart';
 
 class SplashScreenController extends GetxController {
 
@@ -25,7 +25,7 @@ class SplashScreenController extends GetxController {
             UserModel userModel = UserModel.fromJSON(response.data);
             AppConst.userModel ??= userModel;
             if(AppConst.userModel!=null){
-              Get.to(()=>const MainScreen());
+              Get.offAll(()=>const MainScreen());
             }
           }
         }
@@ -41,7 +41,7 @@ class SplashScreenController extends GetxController {
     }
     // shared pref doesn't contain access token key
     else{
-      Get.to(()=>const LoginScreen());
+      Get.offAll(()=>const LoginScreen());
     }
   }
 
