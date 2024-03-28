@@ -35,6 +35,10 @@ class AppBottomNavigationBar extends StatelessWidget {
                 label: "Chat",
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: "Search",
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.add_box_outlined),
               label: "Add",
             ),

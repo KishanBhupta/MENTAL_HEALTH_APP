@@ -19,10 +19,14 @@ class BottomNavigationController extends GetxController {
         break;
       }
       case 2:{
-        screen = BottomBarScreens.addPost;
+        screen = BottomBarScreens.search;
         break;
       }
       case 3:{
+        screen = BottomBarScreens.addPost;
+        break;
+      }
+      case 4:{
         screen = BottomBarScreens.profile;
         break;
       }

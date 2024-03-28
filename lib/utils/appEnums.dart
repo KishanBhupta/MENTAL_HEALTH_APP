@@ -7,5 +7,5 @@ enum ImageType {
 }
 
 enum BottomBarScreens {
-  home , profile , chat , addPost;
+  home , profile , chat , addPost , search ;
 }
