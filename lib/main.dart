@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
 import 'package:mental_helth_wellness/views/splashScreen.dart';
 
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      initialBinding: BindingsBuilder(() {
+        Get.put(PostController());
+      }),
       theme: ThemeData(
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
