@@ -20,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    splashScreenController.checkCurrentAuthState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      splashScreenController.checkCurrentAuthState();
+    });
   }
 
   @override
