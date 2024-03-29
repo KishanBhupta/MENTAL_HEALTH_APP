@@ -47,4 +47,13 @@ class ApiController {
     Response response = await dio.get(ApiUrls.getCurrentUserPath, options: Options(headers: headers));
     return response;
   }
+
+  // function to get posts
+  Future<Response> getPosts({required Map<String, dynamic> data}) async {
+    // var headers = {"Accept":accept};
+    var headers = <String,dynamic>{};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.get(ApiUrls.getPostPath,options: Options(headers: headers),data: data);
+    return response;
+  }
 }
