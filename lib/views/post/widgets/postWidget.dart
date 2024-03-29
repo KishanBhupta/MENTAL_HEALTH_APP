@@ -4,12 +4,17 @@ import 'package:mental_helth_wellness/customWidgets/appImage.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
 import 'package:mental_helth_wellness/utils/appEnums.dart';
+import 'package:mental_helth_wellness/utils/appExtensions.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
 
+import '../../../models/postModel.dart';
 import '../../../utils/spacing.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({super.key});
+  const PostWidget({super.key, required this.post});
+
+  final Post post;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +23,7 @@ class PostWidget extends StatelessWidget {
         horizontal: 16,
         vertical: 8
       ),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: const [
@@ -45,12 +51,12 @@ class PostWidget extends StatelessWidget {
               const CSpace(width: 16),
               
               // user name
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText(text: "User Name"),
-                    AppText(text: "1 hour ago",fontSize: 10,)
+                    const AppText(text: "User Name"),
+                    AppText(text: timeago.format(post.createdAt.toString().getDate()),fontSize: 10,)
                   ],
                 ),
               ),
@@ -72,21 +78,26 @@ class PostWidget extends StatelessWidget {
           const CSpace(height: 8),
 
           // thought
-          const AppText(text: "Thought goes here"),
+          AppText(text: post.postText.toString()),
+
+          const CSpace(height: 8),
+
+          // description
+          AppText(text: post.postDescription.toString()),
 
           const CSpace(height: 8),
 
           // image
-          const Center(
+          post.imageUrl!=null ? Center(
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
               child: AppImage(
                 height: 280,
-                imageType: ImageType.assetImage,
-                imagePath: AssetImages.appLogo,
+                imageType: ImageType.networkImage,
+                imagePath: post.imageUrl.toString(),
               ),
             ),
-          ),
+          ) : const CSpace(),
 
           CSpace(height: Spacing.getDefaultSpacing(context)),
 
@@ -107,7 +118,7 @@ class PostWidget extends StatelessWidget {
                             onTap: (){},
                             child: const Icon(CupertinoIcons.heart,size: 30),
                         ),
-                        const AppText(text: "100")
+                        AppText(text: "${post.likes}")
                       ],
                     ),
 
