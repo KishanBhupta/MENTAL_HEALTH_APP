@@ -1,23 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mental_helth_wellness/controllers/commentController.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appImage.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
 import 'package:mental_helth_wellness/utils/appEnums.dart';
 import 'package:mental_helth_wellness/utils/appExtensions.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
+import 'package:mental_helth_wellness/views/comment/commentScreen.dart';
 
-import '../../../models/postModel.dart';
+import '../../../models/posts/postModel.dart';
+import '../../../utils/appConst.dart';
+import '../../../utils/appString.dart';
 import '../../../utils/spacing.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({super.key, required this.post});
+
+  const PostWidget({super.key, required this.post, required this.index});
 
   final Post post;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    PostController postController = Get.find<PostController>();
+    CommentsController commentsController = Get.find<CommentsController>();
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
@@ -43,9 +54,17 @@ class PostWidget extends StatelessWidget {
           Row(
             children: [
               // user profile image
-              CircleAvatar(
-                radius: 20,
-                backgroundImage:Image.asset(AssetImages.appLogo).image,
+              Container(
+                height: 35,
+                width: 35,
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle
+                ),
+                child: AppImage(
+                  imageType: post.postUser!.profileImage!=null ? ImageType.networkImage : ImageType.assetImage,
+                  imagePath: post.postUser!.profileImage!=null ? post.postUser!.profileImage.toString() : AssetImages.appLogo,
+                ),
               ),
 
               const CSpace(width: 16),
@@ -55,7 +74,11 @@ class PostWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const AppText(text: "User Name"),
+                    AppText(
+                      text:AppConst().checkAnonymous(post.isAnonymous!)
+                        ? post.postUser!.userName??"${post.postUser!.firstName!} ${post.postUser!.lastName!}"
+                        : AppStrings.anonymousLabel,
+                    ),
                     AppText(text: timeago.format(post.createdAt.toString().getDate()),fontSize: 10,)
                   ],
                 ),
@@ -89,10 +112,14 @@ class PostWidget extends StatelessWidget {
 
           // image
           post.imageUrl!=null ? Center(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              clipBehavior: Clip.hardEdge,
+              height: 280,
               child: AppImage(
-                height: 280,
+                fit: BoxFit.fill,
                 imageType: ImageType.networkImage,
                 imagePath: post.imageUrl.toString(),
               ),
@@ -115,8 +142,15 @@ class PostWidget extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                            onTap: (){},
-                            child: const Icon(CupertinoIcons.heart,size: 30),
+                            onTap: () async {
+                              // add like if post does not have element with user id
+                              if(postController.hasLike(index:index)){
+                                await postController.removeLike(index: index, postId: post.id!);
+                              }else {
+                                await postController.addLike(index: index, postId: post.id!);
+                              }
+                          },
+                            child: Icon(postController.hasLike(index:index) ? CupertinoIcons.heart_fill : CupertinoIcons.heart,size: 30, color: postController.hasLike(index:index) ? Colors.red : Colors.black,),
                         ),
                         AppText(text: "${post.likes}")
                       ],
@@ -128,7 +162,10 @@ class PostWidget extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            bool isNewPostId = commentsController.postId != post.id!;
+                            Get.to(()=>CommentScreen(postId:post.id!,isNewPostId:isNewPostId));
+                          },
                           child: const Icon(CupertinoIcons.chat_bubble,size: 30),
                         ),
                         const AppText(text: "100")
@@ -141,30 +178,33 @@ class PostWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // share button
-                    Column(
-                      children: [
-                        InkWell(
-                          onTap: (){},
-                          child: const Icon(CupertinoIcons.share,size: 30),
-                        ),
-                      ],
-                    ),
-
-                    const CSpace(width: 8),
                     // save button
                     Column(
                       children: [
                         InkWell(
-                          onTap: (){},
-                          child: const Icon(CupertinoIcons.bookmark,size: 30),
+                          onTap: () async {
+                            // if post is saved remove it from the list
+                            if(postController.isSaved(index: index)){
+                              await postController.removePost(
+                                  index: index, postId: post.id!);
+                            }
+                            // if post is not saved add
+                            else{
+                              await postController.savePost(
+                                  index: index, postId: post.id!);
+                            }
+                          },
+                          child: Icon(
+                              postController.isSaved(index: index)
+                                  ? CupertinoIcons.bookmark_fill
+                                  : CupertinoIcons.bookmark,
+                              size: 30,
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
-
-
               ],
             ),
           )

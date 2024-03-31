@@ -21,13 +21,16 @@ class AppImage extends StatelessWidget {
     switch(imageType){
       case ImageType.networkImage:
         return FadeInImage(
+          fit: fit,
+          height: height,
+          width: width,
           image: Image.network(
               imagePath,
             height: height,
             width: width,
-            fit: fit,
+            fit: fit??BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
-              return Image.asset(AssetImages.appLogo);
+              return Image.asset(AssetImages.appLogo,height: height,);
             },
           ).image, placeholder:Image.asset(AssetImages.appLogo).image
         );
