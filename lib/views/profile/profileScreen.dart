@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
             child: IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 // Add logic to navigate to the settings screen
               },
@@ -49,11 +49,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Profile photo, name, and username
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
-              child: Row(
+              child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
@@ -77,14 +77,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Edit profile button
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(),
+                  const SizedBox(),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Box containing options
             Container(
               width: double.infinity,
@@ -146,15 +146,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Thoughts',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -169,15 +169,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Saved',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -192,8 +192,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Anonymous',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Posts section
             Visibility(
               visible: _showPosts,
@@ -220,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return PostWidget(post: controller.posts[index]);
+                        return PostWidget(post: controller.posts[index], index: index);
                       },
                       itemCount: controller.posts.length,
                     ),
@@ -248,7 +248,7 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
 
         actions: [
           Padding(
@@ -269,7 +269,7 @@ class EditProfileScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
@@ -290,16 +290,16 @@ class EditProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Profile picture
             Center(
               child: Column(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(AssetImages.appLogo),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
                       // Add logic for 'Anonymous' button
@@ -311,8 +311,8 @@ class EditProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2),
+                    child: const Padding(
+                      padding: EdgeInsets.all(2),
                       child: Text(
                         'Change Profile Picture',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -346,14 +346,14 @@ class EditProfileScreen extends StatelessWidget {
                           width: 2.0, // Focused border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
                       fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Last Name',
@@ -371,14 +371,14 @@ class EditProfileScreen extends StatelessWidget {
                           width: 2.0, // Focused border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
                       fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Email',
@@ -396,14 +396,14 @@ class EditProfileScreen extends StatelessWidget {
                           width: 2.0, // Focused border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
                       fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
@@ -421,7 +421,7 @@ class EditProfileScreen extends StatelessWidget {
                           width: 2.0, // Focused border width
                         ),
                       ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
                       fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
@@ -431,7 +431,7 @@ class EditProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),

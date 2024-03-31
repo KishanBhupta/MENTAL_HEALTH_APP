@@ -19,6 +19,9 @@ class ApiUrls {
   static String removeSavedPostUrl = "$baseUrl/posts/unsavePost";
   static String getPostCommentsPath = "$baseUrl/posts/comments/getcomment";
 
+  static String addCommentLikePath = "$baseUrl/posts/comments/like";
+  static String removeCommentLikePath = "$baseUrl/posts/comments/dislike";
+
   /*
   * Authentication Api Urls Ends
   * */

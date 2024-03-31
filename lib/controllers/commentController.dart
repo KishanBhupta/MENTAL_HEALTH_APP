@@ -5,6 +5,7 @@ import 'package:mental_helth_wellness/models/comment/commentModal.dart';
 import 'package:mental_helth_wellness/models/userModel.dart';
 
 import '../utils/appAnimations.dart';
+import '../utils/appConst.dart';
 import '../utils/appMethods.dart';
 import '../views/auth/loginScreen.dart';
 import 'apiController.dart';
@@ -54,4 +55,66 @@ class CommentsController extends GetxController {
     AppMethods.dismissLoading();
   }
 
+  // function to add like in comment
+  Future addLikeToComment({required int commentId, required int index}) async {
+    try {
+      var data = {
+        "user_id": AppConst.userModel!.id,
+        "comment_id": commentId
+      };
+
+      var response = await ApiController().addLikeToComment(data: data);
+      
+      if(response.statusCode == 200){
+        comments[index].commentLikes.add(CommentLike(usersId: AppConst.userModel!.id!,commentId: commentId));
+        comments[index].likes = (comments[index].likes??0) + 1;
+      }
+    }
+    on DioException catch (error) {
+      print("Api Error : $error");
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+    update();
+  }
+
+  Future removeLikeFromComment({required int commentId, required int index}) async {
+    try {
+      var data = {
+        "user_id": AppConst.userModel!.id,
+        "comment_id": commentId
+      };
+
+      var response = await ApiController().removeLikeFromComment(data: data);
+
+      if(response.statusCode == 200){
+        comments[index].commentLikes.removeWhere((element) => element.usersId! == AppConst.userModel!.id!);
+        comments[index].likes = (comments[index].likes??1) - 1;
+      }
+    }
+    on DioException catch (error) {
+      print("Api Error : $error");
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+    update();
+  }
+
+  // function to report a comment
+  Future reportComment({required int commentId}) async {
+    var data = {
+      "reportedCommentId":2,
+      "reporterReason":"Just For Fun",
+      "userId":2
+    };
+  }
+
+
+  // function to check if post contains user likes
+  bool hasLike({required int index}) {
+    return comments[index].commentLikes.any((element) => element.usersId == AppConst.userModel!.id);
+  }
+  
 }
