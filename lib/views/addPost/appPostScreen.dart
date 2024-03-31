@@ -41,7 +41,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ),
                 ),
                 child: Padding(
-                  // padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -69,7 +68,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             children: [
               // Top profile photo with title text field
               Container(
-                padding: EdgeInsets.all(16),
+                padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start vertically
                   children: [
@@ -101,7 +100,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                   width: 2.0, // Focused border width
                                 ),
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                              contentPadding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                               filled: true, // Fill the text field with color
                               fillColor: appColors.secondaryColor, // Background color of the text field
                             ),
@@ -134,9 +133,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       width: 2.0, // Focused border width
                     ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
+                  contentPadding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                   filled: true, // Fill the text field with color
-                  fillColor: Colors.grey[200], // Background color of the text field
+                  fillColor: appColors.secondaryColor, // Background color of the text field
                 ),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
@@ -166,7 +165,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Set borderRadius to add slight edge
                     side: BorderSide(
-                      color: Colors.blue, // Border color
+                      color: appColors.primaryColor, // Border color
                       width: 1, // Border width
                     ),
                   ),
@@ -181,8 +180,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ],
                 ),
               ),
-
-
               // Spacer to push content to the top
               Spacer(),
             ],
@@ -195,10 +192,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Divider(height: 1, color: Colors.grey[200]), // Line at the top of the box
+                Divider(height: 1, color: appColors.secondaryColor), // Line at the top of the box
                 Container(
                   height: 70,
-                  padding: EdgeInsets.all(12),
+                  padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
