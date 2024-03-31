@@ -73,6 +73,7 @@ class ApiController {
     return response;
   }
 
+  // function to save post
   Future<Response> savePost({required Map<String, int> data}) async {
     var headers = <String,dynamic>{"Accept":accept};
     headers['Authorization'] = (await authToken())!;
@@ -80,6 +81,7 @@ class ApiController {
     return response;
   }
 
+  // function to remove saved post
   Future<Response> removeSavedPost({required Map<String, int> data}) async {
     var headers = <String,dynamic>{"Accept":accept};
     headers['Authorization'] = (await authToken())!;
@@ -87,10 +89,26 @@ class ApiController {
     return response;
   }
 
+  // function to get comment for post
   Future<Response> getCommentsForPost({required Map<String, dynamic> data}) async {
     var headers = <String,dynamic>{"Accept":accept};
     headers['Authorization'] = (await authToken())!;
     var response = await dio.post(ApiUrls.getPostCommentsPath,options: Options(headers: headers),data: data);
+    return response;
+  }
+
+  // function to add like to comment
+  Future<Response> addLikeToComment({required Map<String, int?> data}) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.addCommentLikePath,options: Options(headers: headers),data: data);
+    return response;
+  }
+
+  Future<Response> removeLikeFromComment({required Map<String, int?> data}) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.removeCommentLikePath,options: Options(headers: headers),data: data);
     return response;
   }
 }

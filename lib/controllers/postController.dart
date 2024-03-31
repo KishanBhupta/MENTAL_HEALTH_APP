@@ -135,6 +135,7 @@ class PostController extends GetxController {
     }
     update();
   }
+
   // function to check if post contains user likes
   bool hasLike({required int index}) {
     return posts[index].postLikes.any((element) => element.usersId == AppConst.userModel!.id);
