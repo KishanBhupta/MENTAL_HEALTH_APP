@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/appMethods.dart';
+import 'package:mental_helth_wellness/utils/appString.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 import 'package:mental_helth_wellness/views/post/widgets/postWidget.dart';
 
@@ -21,12 +22,16 @@ class _PostScreenState extends State<PostScreen> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _getPosts();
+    });
+
     scrollController.addListener(() {
       if(
         scrollController.position.pixels == scrollController.position.maxScrollExtent
         && postController.hasNext
       ){
-        postController.page++;
         _getMorePosts();
       }
     });
@@ -36,7 +41,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppText(text: "Home",fontSize: 20,fontWeight: FontWeight.w800),
+        title: AppText(text: AppStrings.homeScreenTitle,fontSize: 20,fontWeight: FontWeight.w800),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal:Spacing.getDefaultSpacing(context)),
@@ -48,15 +53,14 @@ class _PostScreenState extends State<PostScreen> {
         builder: (controller) {
           return RefreshIndicator(
             onRefresh: () async {
-              postController.page = 1;
-              await _getMorePosts();
+              await _getPosts();
             },
             child: ListView.builder(
               controller:scrollController,
               padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return PostWidget(post: controller.posts[index]);
+                return PostWidget(post: controller.posts[index],index: index);
               },
               itemCount: controller.posts.length,
             ),
@@ -66,9 +70,15 @@ class _PostScreenState extends State<PostScreen> {
     );
   }
 
+  // function to get more posts
   Future _getMorePosts() async {
-    AppMethods.showLoading();
+    postController.page++;
     await postController.getPosts();
-    AppMethods.dismissLoading();
+  }
+
+  // function to get posts
+  Future _getPosts() async {
+    postController.page = 1;
+    await postController.getPosts();
   }
 }
