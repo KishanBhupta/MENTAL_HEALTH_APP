@@ -13,9 +13,9 @@ class AppMethods {
   static void showLoading({String? message}){
     EasyLoading.instance
       ..textAlign = TextAlign.center
-      ..toastPosition = EasyLoadingToastPosition.center
       ..userInteractions = false
       ..animationStyle = EasyLoadingAnimationStyle.opacity
+      ..toastPosition = EasyLoadingToastPosition.bottom
       ..indicatorType = EasyLoadingIndicatorType.hourGlass
       ..backgroundColor = AppColors().primaryColor;
 
@@ -33,7 +33,7 @@ class AppMethods {
     if(isError){
       EasyLoading.showError(message);
     }else{
-      EasyLoading.showInfo(message);
+      EasyLoading.showToast(message);
     }
   }
 

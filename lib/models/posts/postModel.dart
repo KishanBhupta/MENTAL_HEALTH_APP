@@ -1,3 +1,7 @@
+import 'package:mental_helth_wellness/models/posts/postLikeModal.dart';
+import 'package:mental_helth_wellness/models/posts/subSavedPostModal.dart';
+import 'package:mental_helth_wellness/models/userModel.dart';
+
 class Post {
   int? id;
   int? usersId;
@@ -9,6 +13,9 @@ class Post {
   int? isAnonymous;
   String? createdAt;
   String? updatedAt;
+  UserModel? postUser;
+  List<PostLike> postLikes = [];
+  List<SubSavedPost> postSave = [];
 
   Post(
       {this.id,
@@ -23,6 +30,7 @@ class Post {
         this.updatedAt});
 
   Post.fromJson(Map<String, dynamic> json) {
+    print("JAIODJAOISJOIASDJOAIS : ${json['post_user']}");
     id = json['id'];
     usersId = json['users_id'];
     imageUrl = json['imageUrl'];
@@ -33,6 +41,7 @@ class Post {
     isAnonymous = json['isAnonymous'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    postUser = UserModel.fromJSON(json['post_user']);
   }
 
   Map<String, dynamic> toJson() {
