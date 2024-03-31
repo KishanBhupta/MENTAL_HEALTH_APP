@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mental_helth_wellness/utils/spacing.dart';
+import 'package:mental_helth_wellness/utils/AppColors.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key); // Add '?' to make 'Key' nullable
@@ -14,6 +16,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   bool isAnonymous = false; // Define and initialize isAnonymous variable
   String username = "@username"; // Initial username
   XFile? _pickedImage; // Add this variable to store the picked image
+  final AppColors appColors = AppColors();
 
 
   @override
@@ -25,20 +28,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
           title: const AppText(text: "Add Post", fontSize: 20, fontWeight: FontWeight.w800),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 15,left: 15, top: 20), // Add right padding to the button
+              padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
               child: ElevatedButton(
                 onPressed: () {
                   // Add logic to send the post
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Background color of the button
+                  backgroundColor: appColors.primaryColor, // Set primary color
                   elevation: 3, // Elevation of the button
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Rounded corners
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Add horizontal and vertical padding
+                  // padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -86,20 +90,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(
-                                  color: Colors.grey, // Border color
+                                  color: appColors.secondaryColor, // Border color
                                   width: 1.0, // Border width
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                                 borderSide: BorderSide(
-                                  color: Colors.blue, // Focused border color
+                                  color: appColors.primaryColor, // Focused border color
                                   width: 2.0, // Focused border width
                                 ),
                               ),
                               contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                               filled: true, // Fill the text field with color
-                              fillColor: Colors.grey[200], // Background color of the text field
+                              fillColor: appColors.secondaryColor, // Background color of the text field
                             ),
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
@@ -119,14 +123,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.grey, // Border color
+                      color: appColors.secondaryColor, // Border color
                       width: 1.0, // Border width
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(
-                      color: Colors.blue, // Focused border color
+                      color: appColors.primaryColor, // Focused border color
                       width: 2.0, // Focused border width
                     ),
                   ),
@@ -158,7 +162,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   _openImagePicker(); // Call function to open image picker
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Button background color
+                  backgroundColor: appColors.primaryColor, // Button background color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Set borderRadius to add slight edge
                     side: BorderSide(

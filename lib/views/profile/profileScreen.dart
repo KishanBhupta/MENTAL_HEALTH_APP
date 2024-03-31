@@ -5,6 +5,8 @@ import 'package:mental_helth_wellness/utils/appMethods.dart';
 import 'package:mental_helth_wellness/views/post/widgets/postWidget.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
+import 'package:mental_helth_wellness/utils/AppColors.dart';
+import 'package:mental_helth_wellness/utils/spacing.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key});
@@ -17,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _showPosts = false;
   final ScrollController scrollController = ScrollController();
   late final PostController postController; // Define postController variable
+  final AppColors appColors = AppColors();
 
   @override
   void initState() {
@@ -31,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: const AppText(text: "My Profile", fontSize: 20, fontWeight: FontWeight.w800),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
             child: IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
@@ -49,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 20),
             // Profile photo, name, and username
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
+              padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 20),
             // Edit profile button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -90,14 +93,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: appColors.primaryColor,
                       elevation: 3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -123,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: appColors.secondaryColor,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: SingleChildScrollView(
@@ -137,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: appColors.secondaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -160,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // Add logic for 'Saved' button
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: appColors.secondaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -183,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // Add logic for 'Anonymous' button
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: appColors.secondaryColor,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -214,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: ListView.builder(
                       controller: scrollController,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return PostWidget(post: controller.posts[index]);
@@ -239,6 +242,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class EditProfileScreen extends StatelessWidget {
+  final AppColors appColors = AppColors();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,7 +252,7 @@ class EditProfileScreen extends StatelessWidget {
 
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -256,14 +261,14 @@ class EditProfileScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: appColors.primaryColor,
                 elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -297,16 +302,30 @@ class EditProfileScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // Add logic to change profile picture
+                      // Add logic for 'Anonymous' button
                     },
-                    child: Text('Change Profile Picture'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black, // Keep the text color unchanged
+                      elevation: 0, // Remove elevation
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        'Change Profile Picture',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
+
                 ],
               ),
             ),
             // Profile details
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -316,20 +335,20 @@ class EditProfileScreen extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.grey, // Border color
+                          color: appColors.secondaryColor, // Border color
                           width: 1.0, // Border width
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.blue, // Focused border color
+                          color: appColors.primaryColor, // Focused border color
                           width: 2.0, // Focused border width
                         ),
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: Colors.grey[200], // Background color of the text field
+                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -341,20 +360,20 @@ class EditProfileScreen extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.grey, // Border color
+                          color: appColors.secondaryColor, // Border color
                           width: 1.0, // Border width
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.blue, // Focused border color
+                          color: appColors.primaryColor, // Focused border color
                           width: 2.0, // Focused border width
                         ),
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: Colors.grey[200], // Background color of the text field
+                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -366,20 +385,20 @@ class EditProfileScreen extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.grey, // Border color
+                          color: appColors.secondaryColor, // Border color
                           width: 1.0, // Border width
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.blue, // Focused border color
+                          color: appColors.primaryColor, // Focused border color
                           width: 2.0, // Focused border width
                         ),
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: Colors.grey[200], // Background color of the text field
+                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -391,20 +410,20 @@ class EditProfileScreen extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.grey, // Border color
+                          color: appColors.secondaryColor, // Border color
                           width: 1.0, // Border width
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: BorderSide(
-                          color: Colors.blue, // Focused border color
+                          color: appColors.primaryColor, // Focused border color
                           width: 2.0, // Focused border width
                         ),
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: Colors.grey[200], // Background color of the text field
+                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
