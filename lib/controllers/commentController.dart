@@ -103,12 +103,22 @@ class CommentsController extends GetxController {
   }
 
   // function to report a comment
-  Future reportComment({required int commentId}) async {
-    var data = {
-      "reportedCommentId":2,
-      "reporterReason":"Just For Fun",
-      "userId":2
-    };
+  Future reportComment({required int commentId, required String reason}) async {
+    try {
+      var data = {
+        "reportedCommentId":commentId,
+        "reporterReason":reason,
+        "userId":AppConst.userModel!.id!
+      };
+      var response = await ApiController().reportComment(data:data);
+      if(response.statusCode == 200){
+        AppMethods.showToast(message: "Report has been submitted !!");
+      }
+    } on DioException catch(error) {
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
   }
 
 

@@ -111,4 +111,13 @@ class ApiController {
     var response = await dio.post(ApiUrls.removeCommentLikePath,options: Options(headers: headers),data: data);
     return response;
   }
+
+  // function to report a comment
+  Future<Response> reportComment({required Map<String, Object> data}) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.reportCommentPath,options: Options(headers: headers),data: data);
+    return response;
+  }
+
 }

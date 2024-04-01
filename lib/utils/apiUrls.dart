@@ -22,6 +22,8 @@ class ApiUrls {
   static String addCommentLikePath = "$baseUrl/posts/comments/like";
   static String removeCommentLikePath = "$baseUrl/posts/comments/dislike";
 
+  static String reportCommentPath = "$baseUrl/reports/comment";
+
   /*
   * Authentication Api Urls Ends
   * */

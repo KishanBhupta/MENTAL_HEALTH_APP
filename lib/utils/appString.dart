@@ -20,6 +20,16 @@ class AppStrings {
   static const String deletePostMenuText = "Delete";
   static const String reportCommentMenuText = "Report";
 
+  // dialog titles
+  static String reportCommentDialogTitle = "Report Comment";
+  static String reportPostDialogTitle = "Report Post";
+  static String reportUserDialogTitle = "Report User";
+
+  // dialog messages
+  static String reportCommentMessage = "Please enter reason for reporting this comment.";
+  static String reportPostMessage = "Please enter reason for reporting this post.";
+  static String reportUserMessage = "Please enter reason for reporting this user.";
+
 
 
 }

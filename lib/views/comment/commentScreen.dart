@@ -8,6 +8,8 @@ import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
 import 'package:mental_helth_wellness/utils/appEnums.dart';
 import 'package:mental_helth_wellness/utils/appExtensions.dart';
+import 'package:mental_helth_wellness/utils/appMethods.dart';
+import 'package:mental_helth_wellness/utils/spacing.dart';
 
 import '../../utils/AppColors.dart';
 import '../../utils/appConst.dart';
@@ -144,7 +146,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       )
                                     : FilledButton.tonalIcon(
                                         onPressed: () async {
-                                          await commentsController.reportComment(commentId: controller.comments[index].id!);
+                                          AppMethods().showReportReasonDialog(title: AppStrings.reportCommentDialogTitle, message: AppStrings.reportCommentMessage, reportType: ReportType.comment,data: {"commentId":controller.comments[index].id!});
                                         },
                                         icon:Icon(CupertinoIcons.info,color: AppColors().danger,),
                                         label: const AppText(text: "Report"),
@@ -186,3 +188,4 @@ class _CommentScreenState extends State<CommentScreen> {
     await commentsController.getComments(id:widget.postId);
   }
 }
+

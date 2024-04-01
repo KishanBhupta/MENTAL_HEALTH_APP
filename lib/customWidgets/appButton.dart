@@ -14,12 +14,12 @@ class AppButton extends StatelessWidget {
       this.fontWeight,
       this.borderRadius,
       this.padding,
-        this.backgroundColor, required this.onPressed, this.width});
+        this.backgroundColor, required this.onPressed, this.width, this.textColor});
 
   final double? height, width, fontSize, letterSpacing, wordSpacing, borderRadius, padding;
   final String text;
   final FontWeight? fontWeight;
-  final Color? backgroundColor;
+  final Color? backgroundColor,textColor;
   final VoidCallback onPressed;
 
   @override
@@ -37,6 +37,7 @@ class AppButton extends StatelessWidget {
         onPressed: onPressed,
         child: AppText(
           text: text,
+          color: textColor,
           fontSize: 16,
           fontWeight: fontWeight ?? FontWeight.w600,
           letterSpacing: letterSpacing,
