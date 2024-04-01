@@ -5,7 +5,11 @@
 import 'dart:ui';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
+import 'package:mental_helth_wellness/utils/appEnums.dart';
+
+import '../views/sharedWidgets/reportReasonDialog.dart';
 
 class AppMethods {
 
@@ -13,9 +17,9 @@ class AppMethods {
   static void showLoading({String? message}){
     EasyLoading.instance
       ..textAlign = TextAlign.center
-      ..toastPosition = EasyLoadingToastPosition.center
       ..userInteractions = false
       ..animationStyle = EasyLoadingAnimationStyle.opacity
+      ..toastPosition = EasyLoadingToastPosition.bottom
       ..indicatorType = EasyLoadingIndicatorType.hourGlass
       ..backgroundColor = AppColors().primaryColor;
 
@@ -33,8 +37,15 @@ class AppMethods {
     if(isError){
       EasyLoading.showError(message);
     }else{
-      EasyLoading.showInfo(message);
+      EasyLoading.showToast(message);
     }
   }
 
+
+  Future showReportReasonDialog({required String title,required String message,required ReportType reportType,required Map<String,dynamic> data}) async {
+    Get.dialog(
+      ReportReasonDialog(title: title,message: message,reportType: reportType,data: data),
+      barrierDismissible: false
+    );
+  }
 }
