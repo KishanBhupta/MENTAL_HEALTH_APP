@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/commentController.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appButton.dart';
 import 'package:mental_helth_wellness/customWidgets/appTextField.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
@@ -23,6 +24,7 @@ class ReportReasonDialog extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final commentController = Get.find<CommentsController>();
+    final postController = Get.find<PostController>();
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -85,7 +87,9 @@ class ReportReasonDialog extends StatelessWidget {
                       await commentController.reportComment(commentId: data['commentId'],reason:reasonController.text.toString());
                     }
                     case ReportType.post:
-                    // TODO: Handle this case.
+                      {
+                        await  postController.reportPost(postId: data['postId'],reason:reasonController.text.toString());
+                      }
                     case ReportType.user:
                     // TODO: Handle this case.
                   }

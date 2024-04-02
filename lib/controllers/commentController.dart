@@ -20,7 +20,8 @@ class CommentsController extends GetxController {
   Map<String,dynamic> getCommentData = {};
 
 
-  // function to get posts
+  // function to get commments
+
   Future<void> getComments({required int id}) async {
     AppMethods.showLoading();
     getCommentData['post_id'] = id;
@@ -56,6 +57,7 @@ class CommentsController extends GetxController {
   }
 
   // function to add like in comment
+
   Future addLikeToComment({required int commentId, required int index}) async {
     try {
       var data = {
@@ -78,6 +80,8 @@ class CommentsController extends GetxController {
     }
     update();
   }
+
+  // function to remove like from comment
 
   Future removeLikeFromComment({required int commentId, required int index}) async {
     try {
