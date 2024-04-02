@@ -1,8 +1,12 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/models/comment/commentLikeModal.dart';
 import 'package:mental_helth_wellness/models/comment/commentModal.dart';
 import 'package:mental_helth_wellness/models/userModel.dart';
+import 'package:mental_helth_wellness/utils/appExtensions.dart';
+import 'package:mental_helth_wellness/utils/appString.dart';
 
 import '../utils/appAnimations.dart';
 import '../utils/appConst.dart';
@@ -122,9 +126,48 @@ class CommentsController extends GetxController {
   }
 
 
+  // function
+  Future<void> addCommentToPost({required int postId, required String comment, required bool isAnonymous}) async {
+    try {
+      var data = {
+        "users_id" : AppConst.userModel!.id!,
+        "post_id"  : postId,
+        "commentDescription" : comment,
+        "isAnonymous" : isAnonymous
+      };
+      var response = await ApiController().addCommentToPost(data:data);
+      if(response.statusCode == 200){
+        page = 1;
+        await getComments(id: postId);
+      }else {
+        AppMethods.showToast(message: AppStrings.commentAddError);
+      }
+    } on DioException catch(error) {
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+  }
+
+  // function to delete user's own comment
+  Future<void> deleteMyComment({required int commentId, required int index}) async {
+    try {
+      var response = await ApiController().deleteMyComment(commentId:commentId);
+      if(response.statusCode == 200){
+        comments.removeAt(index);
+      }
+    } on DioException catch(error) {
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+    update();
+  }
+
   // function to check if post contains user likes
   bool hasLike({required int index}) {
     return comments[index].commentLikes.any((element) => element.usersId == AppConst.userModel!.id);
   }
+
   
 }

@@ -30,7 +30,7 @@ class AppImage extends StatelessWidget {
             width: width,
             fit: fit??BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
-              return Image.asset(AssetImages.appLogo,height: height,);
+              return Image.asset(AssetImages.appLogo,height: height);
             },
           ).image, placeholder:Image.asset(AssetImages.appLogo).image
         );

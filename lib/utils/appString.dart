@@ -30,6 +30,8 @@ class AppStrings {
   static String reportPostMessage = "Please enter reason for reporting this post.";
   static String reportUserMessage = "Please enter reason for reporting this user.";
 
+  static String commentAddError = "Unable to add comment";
+
 
 
 }

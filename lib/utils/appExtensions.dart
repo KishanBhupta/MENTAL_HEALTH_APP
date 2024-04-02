@@ -7,5 +7,5 @@ extension StringExtensions on String {
 }
 
 extension DateExtensions on DateTime {
-  String getDMYDate() => DateFormat('d-m-Y').format(this);
+  String getDMYDate() => DateFormat('d-m-yyyy').format(this);
 }
