@@ -6,6 +6,7 @@ import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appImage.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
+import 'package:mental_helth_wellness/models/userModel.dart';
 import 'package:mental_helth_wellness/utils/appEnums.dart';
 import 'package:mental_helth_wellness/utils/appExtensions.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
@@ -13,6 +14,7 @@ import 'package:mental_helth_wellness/views/comment/commentScreen.dart';
 
 import '../../../models/posts/postModel.dart';
 import '../../../utils/appConst.dart';
+import '../../../utils/appMethods.dart';
 import '../../../utils/appString.dart';
 import '../../../utils/spacing.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -86,13 +88,29 @@ class PostWidget extends StatelessWidget {
               
               PopupMenuButton(
                 surfaceTintColor: Colors.white,
+                onSelected: (value)  {
+
+                    AppMethods().showReportReasonDialog(title: AppStrings.reportPostDialogTitle, message: AppStrings.reportPostMessage, reportType: ReportType.post,data: {"postId":post.id});
+                },
                 itemBuilder: (context) {
+
+                  if(post.postUser!.id == AppConst.userModel!.id!){
+                    return <PopupMenuItem>[
+                    const PopupMenuItem(
+                        value: 0,
+                        child: AppText(text: "Delete"),
+
+                    ),
+                  ];
+                  }
+                  else{
                   return <PopupMenuItem>[
                     const PopupMenuItem(
                         value: 0,
-                        child: AppText(text: "Delete")
+                        child: AppText(text: "Report")
                     )
                   ];
+                  }
                 },
               )
             ],
