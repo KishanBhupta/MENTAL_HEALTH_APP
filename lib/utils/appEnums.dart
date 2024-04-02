@@ -9,3 +9,7 @@ enum ImageType {
 enum BottomBarScreens {
   home , profile , chat , addPost , search ;
 }
+
+enum ReportType {
+  comment , post ,user ;
+}

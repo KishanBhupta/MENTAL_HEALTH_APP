@@ -5,7 +5,11 @@
 import 'dart:ui';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
+import 'package:mental_helth_wellness/utils/appEnums.dart';
+
+import '../views/sharedWidgets/reportReasonDialog.dart';
 
 class AppMethods {
 
@@ -37,4 +41,11 @@ class AppMethods {
     }
   }
 
+
+  Future showReportReasonDialog({required String title,required String message,required ReportType reportType,required Map<String,dynamic> data}) async {
+    Get.dialog(
+      ReportReasonDialog(title: title,message: message,reportType: reportType,data: data),
+      barrierDismissible: false
+    );
+  }
 }
