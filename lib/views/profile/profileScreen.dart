@@ -220,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context),vertical: 8),// Add horizontal and vertical padding
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return PostWidget(post: controller.posts[index]);
+                        return PostWidget(post: controller.posts[index], index: index,);
                       },
                       itemCount: controller.posts.length,
                     ),
@@ -305,7 +305,7 @@ class EditProfileScreen extends StatelessWidget {
                       // Add logic for 'Anonymous' button
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black, // Keep the text color unchanged
+                      foregroundColor: AppColors().primaryColor, // Keep the text color unchanged
                       elevation: 0, // Remove elevation
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -348,7 +348,6 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -373,7 +372,6 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -398,7 +396,6 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
@@ -423,7 +420,6 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0), // Padding inside the text field
                       filled: true, // Fill the text field with color
-                      fillColor: appColors.secondaryColor, // Background color of the text field
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,

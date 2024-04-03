@@ -57,6 +57,14 @@ class ApiController {
     return response;
   }
 
+  Future<Response> createPosts({required Map<String, dynamic> data}) async {
+    // var headers = {"Accept":accept};
+    var headers = <String,dynamic>{};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.createPostPath,options: Options(headers: headers),data: data);
+    return response;
+  }
+
   // function to add like to post
   Future<Response> addLikeToPost({required int postId,required Map<String,dynamic> data}) async {
     var headers = <String,dynamic>{"Accept":accept};
