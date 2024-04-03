@@ -6,8 +6,8 @@ enum ImageType {
   networkImage , assetImage;
 }
 
-enum PopupMenu {
-  Delete , Report ;
+enum PostMenu {
+  delete , report ;
 }
 
 enum BottomBarScreens {

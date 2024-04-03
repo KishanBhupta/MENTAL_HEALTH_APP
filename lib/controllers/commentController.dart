@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/models/comment/commentLikeModal.dart';
 import 'package:mental_helth_wellness/models/comment/commentModal.dart';
 import 'package:mental_helth_wellness/models/userModel.dart';
@@ -22,6 +23,8 @@ class CommentsController extends GetxController {
   int page = 1;
   bool hasNext = true;
   Map<String,dynamic> getCommentData = {};
+
+  final postController = Get.find<PostController>();
 
 
   // function to get commments

@@ -86,30 +86,37 @@ class PostWidget extends StatelessWidget {
                 ),
               ),
               
-              PopupMenuButton(
+              PopupMenuButton<PostMenu>(
                 surfaceTintColor: Colors.white,
-                onSelected: (value)  {
-
-                    AppMethods().showReportReasonDialog(title: AppStrings.reportPostDialogTitle, message: AppStrings.reportPostMessage, reportType: ReportType.post,data: {"postId":post.id});
+                onSelected: (value)  async {
+                  switch(value){
+                    case PostMenu.report: {
+                      AppMethods().showReportReasonDialog(title: AppStrings.reportPostDialogTitle, message: AppStrings.reportPostMessage, reportType: ReportType.post,data: {"postId":post.id});
+                      break;
+                    }
+                    case PostMenu.delete: {
+                      await postController.deleteMyPost(postId:post.id!,index:index);
+                    }
+                  }
                 },
                 itemBuilder: (context) {
 
                   if(post.postUser!.id == AppConst.userModel!.id!){
-                    return <PopupMenuItem>[
-                    const PopupMenuItem(
-                        value: 0,
-                        child: AppText(text: "Delete"),
+                    return <PopupMenuItem<PostMenu>>[
+                      const PopupMenuItem(
+                          value: PostMenu.delete,
+                          child: AppText(text: "Delete"),
 
-                    ),
-                  ];
+                      ),
+                    ];
                   }
                   else{
-                  return <PopupMenuItem>[
-                    const PopupMenuItem(
-                        value: 0,
-                        child: AppText(text: "Report")
-                    )
-                  ];
+                    return <PopupMenuItem<PostMenu>>[
+                      const PopupMenuItem(
+                          value: PostMenu.report,
+                          child: AppText(text: "Report")
+                      )
+                    ];
                   }
                 },
               )
@@ -180,13 +187,14 @@ class PostWidget extends StatelessWidget {
                     Column(
                       children: [
                         InkWell(
-                          onTap: (){
+                          onTap: () async {
                             bool isNewPostId = commentsController.postId != post.id!;
-                            Get.to(()=>CommentScreen(postId:post.id!,isNewPostId:isNewPostId));
+                            var result = await Get.to(()=>CommentScreen(postId:post.id!,isNewPostId:isNewPostId));
+                            postController.updateCommentCountForPost(postId: post.id!,data:result,index:index);
                           },
                           child: const Icon(CupertinoIcons.chat_bubble,size: 30),
                         ),
-                        const AppText(text: "100")
+                        AppText(text: post.comments.toString())
                       ],
                     ),
                   ],

@@ -11,6 +11,7 @@ class Post {
   int? likes;
   int? postStatus;
   int? isAnonymous;
+  int? comments;
   String? createdAt;
   String? updatedAt;
   UserModel? postUser;
@@ -27,6 +28,7 @@ class Post {
         this.postStatus,
         this.isAnonymous,
         this.createdAt,
+        this.comments,
         this.updatedAt});
 
   Post.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class Post {
     isAnonymous = json['isAnonymous'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    comments = json['comments'];
     postUser = UserModel.fromJSON(json['post_user']);
   }
 
@@ -56,6 +59,7 @@ class Post {
     data['isAnonymous'] = isAnonymous;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['comments'] = comments;
     return data;
   }
 }

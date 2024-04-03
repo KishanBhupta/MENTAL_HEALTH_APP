@@ -135,7 +135,7 @@ class ApiController {
     return response;
   }
 
-  // function to delete user's own post
+  // function to delete user's own comment
   Future<Response> deleteMyComment({required int commentId}) async {
     var headers = <String,dynamic>{"Accept":accept};
     headers['Authorization'] = (await authToken())!;
@@ -143,4 +143,11 @@ class ApiController {
     return response;
   }
 
+  // function to delete user's own post
+  Future<Response> deleteMyPost({required int postId}) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.get("${ApiUrls.deleteUserPostPath}/$postId",options: Options(headers: headers));
+    return response;
+  }
 }

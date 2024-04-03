@@ -33,6 +33,8 @@ class _CommentScreenState extends State<CommentScreen> {
 
   TextEditingController commentTextController = TextEditingController();
   ValueNotifier<bool> isAnonymous = ValueNotifier(false);
+  int commentAdded = 0;
+  int commentDeleted = 0;
 
   @override
   void initState() {
@@ -47,6 +49,15 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            Get.back(result: {
+              "commentAdded":commentAdded,
+              "commentDeleted":commentDeleted
+            });
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const AppText(text: AppStrings.commentsScreenTitle,fontSize: 20,fontWeight: FontWeight.w800),
       ),
       body: GetBuilder<CommentsController>(
@@ -139,7 +150,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 controller.comments[index].commentUser!.id! == AppConst.userModel!.id!
                                     ? FilledButton.tonalIcon(
                                         onPressed: () async {
-                                          await commentsController.deleteMyComment(commentId:controller.comments[index].id!,index:index);
+                                          await commentsController.deleteMyComment(commentId:controller.comments[index].id!,index:index).whenComplete(() => commentDeleted++);
                                         },
                                         icon:Icon(CupertinoIcons.trash,color: AppColors().danger,),
                                         label: const AppText(text: "Delete"),
@@ -233,7 +244,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 InkWell(
                   onTap: () async {
                     if(commentTextController.text.toString().isNotEmpty) {
-                      await commentsController.addCommentToPost(postId:widget.postId,comment: commentTextController.text.toString(),isAnonymous: isAnonymous.value);
+                      await commentsController.addCommentToPost(postId:widget.postId,comment: commentTextController.text.toString(),isAnonymous: isAnonymous.value).whenComplete(() => commentAdded++);
                       commentTextController.clear();
                     }
                   },

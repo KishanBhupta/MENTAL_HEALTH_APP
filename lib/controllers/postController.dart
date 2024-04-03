@@ -164,8 +164,22 @@ class PostController extends GetxController {
     update();
   }
 
-  // function to check if post contains user likes
+  // function to delete user's post
+  Future<void> deleteMyPost({required int postId, required int index}) async {
+    try {
+      var response = await ApiController().deleteMyPost(postId: postId);
+      if(response.statusCode==200){
+        posts.removeAt(index);
+      }
+    } on DioException catch (error) {
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+    update();
+  }
 
+  // function to check if post contains user likes
   bool hasLike({required int index}) {
     return posts[index].postLikes.any((element) => element.usersId == AppConst.userModel!.id);
   }
@@ -176,6 +190,18 @@ class PostController extends GetxController {
     return posts[index].postSave.any((element) => element.usersId == AppConst.userModel!.id);
   }
 
+  // function to update post comment count when adding or removing comment
+  void updateCommentCountForPost({required int postId,required Map<String,int> data, required int index}) {
+    print(data);
+    if(data['commentAdded']!>0){
+      print("oaksopdaksopdkapsodk");
+      posts[index].comments = posts[index].comments! +  data['commentAdded']!;
+    }else if(data['commentDeleted']!>0){
+      print("oaksopdaksopdkapsodkas;dasd[a;pd[ap[sdapd[");
+      posts[index].comments = posts[index].comments!  -  data['commentDeleted']!;
+    }
+    update();
+  }
 
 
 }

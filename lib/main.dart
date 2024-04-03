@@ -6,6 +6,7 @@ import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/views/auth/loginScreen.dart';
 import 'package:mental_helth_wellness/views/splashScreen.dart';
 
+import 'controllers/searchController.dart';
 import 'utils/localStorage.dart';
 
 Future<void> main() async {
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
         Get.put(PostController());
         // comment controller
         Get.put(CommentsController());
+        // search controller
+        Get.put(SearchQueryController());
       }),
       theme: ThemeData(
         useMaterial3: true,
