@@ -120,6 +120,13 @@ class ApiController {
     return response;
   }
 
+  Future<Response> reportPost({required Map<String, dynamic> data}) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.reportPostPath,options: Options(headers: headers),data: data);
+    return response;
+  }
+
   // function to add comment to post
   Future<Response> addCommentToPost({required Map<String, Object> data}) async {
     var headers = <String,dynamic>{"Accept":accept};

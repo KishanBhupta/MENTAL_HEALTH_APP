@@ -22,6 +22,7 @@ class PostController extends GetxController {
 
 
   // function to get posts
+
   Future<void> getPosts() async {
     AppMethods.showLoading();
     getPostData['page'] = page;
@@ -56,6 +57,7 @@ class PostController extends GetxController {
   }
 
   // function to add like to post
+
   Future<void> addLike({required int index, required int postId}) async {
     try {
       var data = {"post_id":postId,"user_id":AppConst.userModel!.id!};
@@ -73,6 +75,8 @@ class PostController extends GetxController {
       }
     }
   }
+
+  // Function remove likes from post
 
   Future<void> removeLike({required int index, required int postId}) async {
     try {
@@ -93,6 +97,7 @@ class PostController extends GetxController {
   }
 
   // function to save the post
+
   Future<void> savePost({required int index, required int postId}) async {
     var data = {
       "users_id":AppConst.userModel!.id!,
@@ -115,6 +120,8 @@ class PostController extends GetxController {
     update();
   }
 
+  //  function to unsaved the post
+
   Future<void> removePost({required int index, required int postId}) async {
     var data = {
       "users_id":AppConst.userModel!.id!,
@@ -136,14 +143,39 @@ class PostController extends GetxController {
     update();
   }
 
+  //  Function to report other user's  post
+
+  Future<void> reportPost({required postId, required String reason}) async{
+    try {
+      var data = {
+        "reportedPostId":postId,
+        "reporterReason":reason,
+        "userId":AppConst.userModel!.id!
+      };
+      var response = await ApiController().reportPost(data:data);
+      if(response.statusCode == 200){
+        AppMethods.showToast(message: "Report has been submitted !!");
+      }
+    } on DioException catch(error) {
+      if (error.response!.statusCode == 401) {
+        Get.offAll(() => const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
+      }
+    }
+    update();
+  }
+
   // function to check if post contains user likes
+
   bool hasLike({required int index}) {
     return posts[index].postLikes.any((element) => element.usersId == AppConst.userModel!.id);
   }
 
   // function to check if post save list contains user id
+
   bool isSaved({required int index}){
     return posts[index].postSave.any((element) => element.usersId == AppConst.userModel!.id);
   }
+
+
 
 }

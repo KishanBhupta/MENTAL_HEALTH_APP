@@ -23,6 +23,7 @@ class ApiUrls {
   static String removeCommentLikePath = "$baseUrl/posts/comments/dislike";
 
   static String reportCommentPath = "$baseUrl/reports/comment";
+  static String reportPostPath = "$baseUrl/reports/post";
 
   static String addCommentPath = "$baseUrl/posts/comments/add";
   static String deleteCommentPath = "$baseUrl/posts/comments/delete";
