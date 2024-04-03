@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/models/comment/commentLikeModal.dart';
 import 'package:mental_helth_wellness/models/comment/commentModal.dart';
 import 'package:mental_helth_wellness/models/userModel.dart';
@@ -23,8 +24,11 @@ class CommentsController extends GetxController {
   bool hasNext = true;
   Map<String,dynamic> getCommentData = {};
 
+  final postController = Get.find<PostController>();
 
-  // function to get posts
+
+  // function to get commments
+
   Future<void> getComments({required int id}) async {
     AppMethods.showLoading();
     getCommentData['post_id'] = id;
@@ -60,6 +64,7 @@ class CommentsController extends GetxController {
   }
 
   // function to add like in comment
+
   Future addLikeToComment({required int commentId, required int index}) async {
     try {
       var data = {
@@ -82,6 +87,8 @@ class CommentsController extends GetxController {
     }
     update();
   }
+
+  // function to remove like from comment
 
   Future removeLikeFromComment({required int commentId, required int index}) async {
     try {

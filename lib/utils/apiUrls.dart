@@ -18,12 +18,13 @@ class ApiUrls {
   static String savePostUrl = "$baseUrl/posts/savePost";
   static String removeSavedPostUrl = "$baseUrl/posts/unsavePost";
   static String getPostCommentsPath = "$baseUrl/posts/comments/getcomment";
+  static String reportPostPath = "$baseUrl/reports/post";
+  static String deleteUserPostPath = "$baseUrl/posts/deletePost";
 
+  // comment paths
   static String addCommentLikePath = "$baseUrl/posts/comments/like";
   static String removeCommentLikePath = "$baseUrl/posts/comments/dislike";
-
   static String reportCommentPath = "$baseUrl/reports/comment";
-
   static String addCommentPath = "$baseUrl/posts/comments/add";
   static String deleteCommentPath = "$baseUrl/posts/comments/delete";
 

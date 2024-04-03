@@ -6,6 +6,10 @@ enum ImageType {
   networkImage , assetImage;
 }
 
+enum PostMenu {
+  delete , report ;
+}
+
 enum BottomBarScreens {
   home , profile , chat , addPost , search ;
 }
