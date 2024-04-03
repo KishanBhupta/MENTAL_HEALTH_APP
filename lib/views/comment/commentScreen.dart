@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/commentController.dart';
 import 'package:mental_helth_wellness/customWidgets/appImage.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
+import 'package:mental_helth_wellness/customWidgets/appTextField.dart';
 import 'package:mental_helth_wellness/customWidgets/cSpace.dart';
+import 'package:mental_helth_wellness/utils/appColors.dart';
 import 'package:mental_helth_wellness/utils/appEnums.dart';
 import 'package:mental_helth_wellness/utils/appExtensions.dart';
 import 'package:mental_helth_wellness/utils/appMethods.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
-
-import '../../utils/AppColors.dart';
 import '../../utils/appConst.dart';
 import '../../utils/appString.dart';
 import '../../utils/assetImages.dart';
@@ -31,6 +31,9 @@ class _CommentScreenState extends State<CommentScreen> {
 
   final commentsController = Get.find<CommentsController>();
 
+  TextEditingController commentTextController = TextEditingController();
+  ValueNotifier<bool> isAnonymous = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
@@ -44,27 +47,28 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: AppText(text: AppStrings.commentsScreenTitle,fontSize: 20,fontWeight: FontWeight.w800),
+        title: const AppText(text: AppStrings.commentsScreenTitle,fontSize: 20,fontWeight: FontWeight.w800),
       ),
       body: GetBuilder<CommentsController>(
         builder: (controller) {
           if(controller.comments.isEmpty){
-            return Center(
+            return const Center(
               child: AppText(
                 text: AppStrings.noCommentsLabel,
               ),
             );
           }else{
             return ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: Spacing.getDefaultSpacing(context),right: Spacing.getDefaultSpacing(context),bottom: 80),
               separatorBuilder: (context, index) {
                 return const Divider();
               },
               itemBuilder: (context, index) {
-                index = 0;
                 return Container(
                   padding: const EdgeInsets.all(8),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // commenter's photo
                       Container(
@@ -75,8 +79,8 @@ class _CommentScreenState extends State<CommentScreen> {
                             shape: BoxShape.circle
                         ),
                         child: AppImage(
-                          imageType: controller.comments[index].commentUser!.profileImage!=null ? ImageType.networkImage : ImageType.assetImage,
-                          imagePath: controller.comments[index].commentUser!.profileImage!=null ? controller.comments[index].commentUser!.profileImage.toString() : AssetImages.appLogo,
+                          imageType:AppConst().checkAnonymous(controller.comments[index].isAnonymous!) ?  ImageType.assetImage : controller.comments[index].commentUser!.profileImage!=null ? ImageType.networkImage : ImageType.assetImage,
+                          imagePath:AppConst().checkAnonymous(controller.comments[index].isAnonymous!) ?  AssetImages.appLogo : controller.comments[index].commentUser!.profileImage!=null ? controller.comments[index].commentUser!.profileImage.toString() : AssetImages.appLogo,
                         ),
                       ),
 
@@ -91,8 +95,8 @@ class _CommentScreenState extends State<CommentScreen> {
                               children: [
                                 AppText(
                                   text: AppConst().checkAnonymous(controller.comments[index].isAnonymous!)
-                                      ? controller.comments[index].commentUser!.userName??"${controller.comments[index].commentUser!.firstName!} ${controller.comments[index].commentUser!.lastName!}"
-                                      : AppStrings.anonymousLabel,
+                                      ? AppStrings.anonymousLabel
+                                      : controller.comments[index].commentUser!.userName??"${controller.comments[index].commentUser!.firstName!} ${controller.comments[index].commentUser!.lastName!}",
                                   fontWeight: FontWeight.w800,
                                 ),
 
@@ -134,11 +138,11 @@ class _CommentScreenState extends State<CommentScreen> {
 
                                 controller.comments[index].commentUser!.id! == AppConst.userModel!.id!
                                     ? FilledButton.tonalIcon(
-                                        onPressed: (){
-
+                                        onPressed: () async {
+                                          await commentsController.deleteMyComment(commentId:controller.comments[index].id!,index:index);
                                         },
                                         icon:Icon(CupertinoIcons.trash,color: AppColors().danger,),
-                                        label: const AppText(text: "Report"),
+                                        label: const AppText(text: "Delete"),
                                         style: FilledButton.styleFrom(
                                           surfaceTintColor: Colors.white,
                                           backgroundColor: Colors.white,
@@ -163,13 +167,84 @@ class _CommentScreenState extends State<CommentScreen> {
                     ],
                   ),
                 );
-                
               },
-              itemCount: 2,
+              itemCount: controller.comments.length,
             );
           }
         },
       ),
+      floatingActionButton: ValueListenableBuilder(
+          valueListenable: isAnonymous,
+        builder: (context,value,child) {
+          return Container(
+            height: 70,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    blurRadius: 10,
+                  )
+                ]
+            ),
+            padding: EdgeInsets.symmetric(vertical: 8,horizontal: Spacing.getDefaultSpacing(context)),
+            margin: EdgeInsets.symmetric(horizontal: Spacing.getDefaultSpacing(context)),
+            child: Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: isAnonymous.value ? const AppImage(imageType: ImageType.assetImage, imagePath: AssetImages.appLogo) : AppImage(imageType: ImageType.networkImage, imagePath: AppConst.userModel!.profileImage.toString()),
+                ),
+
+                CSpace(width: Spacing.getDefaultSpacing(context)),
+
+                Expanded(
+                    child: AppTextField(
+                      controller: commentTextController,
+                      validator: (comment){
+                        return null;
+                      },
+                      isDense: true,
+                      consistentBorderColor: AppColors().primaryColor,
+                      isConsistentBorderColor: true,
+                      borderType: BorderType.underlineBorder,
+                      isBorderEnabled: true,
+                      hintText: "Comment as ${ value ? "Anonymous" : AppConst.userModel!.userName}",
+                    )
+                ),
+
+                CSpace(width: Spacing.getDefaultSpacing(context)),
+
+                InkWell(
+                  onTap: (){
+                    isAnonymous.value = !isAnonymous.value;
+                  },
+                  child: const Icon(Icons.swap_horiz),
+                ),
+
+                CSpace(width: Spacing.getDefaultSpacing(context)),
+
+                InkWell(
+                  onTap: () async {
+                    if(commentTextController.text.toString().isNotEmpty) {
+                      await commentsController.addCommentToPost(postId:widget.postId,comment: commentTextController.text.toString(),isAnonymous: isAnonymous.value);
+                      commentTextController.clear();
+                    }
+                  },
+                  child: Icon(Icons.send,color: AppColors().primaryColor),
+                )
+              ],
+            ),
+          );
+        }
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
