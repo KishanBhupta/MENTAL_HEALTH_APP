@@ -1,3 +1,5 @@
+// AddPostScreen
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -9,26 +11,24 @@ import 'package:mental_helth_wellness/utils/spacing.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
 import 'package:mental_helth_wellness/utils/appMethods.dart';
 
-
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({Key? key}) : super(key: key); // Add '?' to make 'Key' nullable
+  const AddPostScreen({Key? key}) : super(key: key);
 
   @override
   State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  bool isAnonymous = false; // Define and initialize isAnonymous variable
-  String username = "@username"; // Initial username
-  XFile? _pickedImage; // Add this variable to store the picked image
+  bool isAnonymous = false;
+  String username = "@username";
+  XFile? _pickedImage;
   final AppColors appColors = AppColors();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
-  int userId = 1; // Set default user_id as 1
+  int userId = 1;
 
   @override
   void dispose() {
-    // Dispose the controllers when the state is disposed to avoid memory leaks
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
@@ -47,10 +47,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: ElevatedButton(
               onPressed: _createPost,
               style: ElevatedButton.styleFrom(
-                backgroundColor: appColors.primaryColor, // Set primary color
-                elevation: 3, // Elevation of the button
+                backgroundColor: appColors.primaryColor,
+                elevation: 3,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: Padding(
@@ -63,12 +63,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     Text(
                       'Post',
                       style: TextStyle(
-                        color: Colors.black, // Text color
+                        color: Colors.black,
                         fontSize: 16,
                       ),
                     ),
                     SizedBox(width: 8),
-                    // Add some spacing between text and icon
                   ],
                 ),
               ),
@@ -80,7 +79,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
         children: [
           Column(
             children: [
-              // Top profile photo with title text field
               Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: Spacing.getDefaultSpacing(context),
@@ -99,7 +97,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         children: [
                           SizedBox(height: 10),
                           TextField(
-                            controller: _titleController, // Assign the title controller
+                            controller: _titleController,
                             decoration: InputDecoration(
                               hintText: 'Add a Title',
                               border: OutlineInputBorder(
@@ -130,10 +128,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ],
                 ),
               ),
-              // Text field for post
               SizedBox(height: 20),
               TextField(
-                controller: _contentController, // Assign the content controller
+                controller: _contentController,
                 decoration: InputDecoration(
                   hintText: 'What\'s on your mind?',
                   border: OutlineInputBorder(
@@ -158,8 +155,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
               ),
-              // Add photo button
-              SizedBox(height: 50),
+              SizedBox(height: 20),
+              if (_pickedImage != null) // Display picked image if available
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  child: Image.file(
+                    File(_pickedImage!.path),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _openImagePicker,
                 style: ElevatedButton.styleFrom(
@@ -209,12 +215,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       Text("Post as a " + username),
                       Spacer(),
                       IconButton(
-                        onPressed: () {
-                          setState(() {
-                            username = isAnonymous ? "@username" : "Anonymous";
-                            isAnonymous = !isAnonymous;
-                          });
-                        },
+                        onPressed: _toggleAnonymous,
                         icon: Icon(Icons.swap_horiz),
                         color: Colors.black,
                       ),
@@ -241,27 +242,33 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   void _createPost() {
-    // Check if title and content are not empty
-    if (_titleController.text.isNotEmpty &&
-        _contentController.text.isNotEmpty) {
-      // Create an instance of CreatePostController
-      CreatePostController createPostController = CreatePostController();
+    final title = _titleController.text.trim();
+    final content = _contentController.text.trim();
+    final imageUrl = _pickedImage?.path ?? ""; // Use picked image path as imageUrl
 
-      // Call createPosts method on the instance
-      createPostController.createPosts(
-        title: _titleController.text,
-        content: _contentController.text,
-        image: _pickedImage?.path ?? "",
-        anonymous: isAnonymous,
-        userId: userId, // Pass the user_id to the createPosts method
+    if (title.isNotEmpty && content.isNotEmpty) {
+      CreatePostController().createPosts(
+        title: title,
+        content: content,
+        imageUrl: imageUrl,
+        isAnonymous: isAnonymous,
+        userId: userId,
       );
-
-      // Clear the text fields after creating the post
       _titleController.clear();
       _contentController.clear();
     } else {
-      // Show an error message if title or content is empty
-      AppMethods.showToast(message: "Please fill in title and content");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in title and content'),
+        ),
+      );
     }
+  }
+
+  void _toggleAnonymous() {
+    setState(() {
+      username = isAnonymous ? "@username" : "Anonymous";
+      isAnonymous = !isAnonymous;
+    });
   }
 }
