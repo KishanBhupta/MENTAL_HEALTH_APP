@@ -25,6 +25,9 @@ class ApiUrls {
   static String reportCommentPath = "$baseUrl/reports/comment";
   static String reportPostPath = "$baseUrl/reports/post";
 
+  static String addCommentPath = "$baseUrl/posts/comments/add";
+  static String deleteCommentPath = "$baseUrl/posts/comments/delete";
+
   /*
   * Authentication Api Urls Ends
   * */
