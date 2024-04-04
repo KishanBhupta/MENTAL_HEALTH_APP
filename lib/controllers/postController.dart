@@ -28,6 +28,7 @@ class PostController extends GetxController {
     getPostData['page'] = page;
     if(page == 1){
       posts.clear();
+      hasNext = true;
     }
     try {
       var response = await ApiController().getPosts(data:getPostData);

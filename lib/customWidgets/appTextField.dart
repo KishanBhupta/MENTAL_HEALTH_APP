@@ -53,6 +53,8 @@ class AppTextField extends StatelessWidget {
   //suffix and prefix
   final Widget? suffix, prefix, suffixIcon, prefixIcon;
 
+  void Function(String)? onChange;
+
 
 
 
@@ -68,6 +70,7 @@ class AppTextField extends StatelessWidget {
     this.border,
     this.enableBorder,
     this.focusBorder,
+    this.onChange,
     this.errorBorder,
     this.borderRadius,
     this.enableBorderRadius,
@@ -124,6 +127,7 @@ class AppTextField extends StatelessWidget {
       obscureText: isPassword??false,
       maxLines: maxLines??1,
       maxLength: maxLength,
+      onChanged: onChange,
       style: TextStyle(
         fontSize: textFontSize,
         fontWeight: textFontWeight,
