@@ -1,22 +1,25 @@
-// CreatePostController
-
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/apiController.dart';
+import 'package:mental_helth_wellness/controllers/authController.dart'; // Import the AuthController
 import 'package:mental_helth_wellness/utils/appMethods.dart';
 
 class CreatePostController extends GetxController {
+  final AuthController _authController = Get.find<AuthController>(); // Get the AuthController instance
+
   Future<void> createPosts({
     required String title,
     required String content,
     required String imageUrl,
     required bool isAnonymous,
-    required int userId,
   }) async {
     AppMethods.showLoading();
 
     try {
+      // Retrieve the userId of the currently logged-in user from AuthController
+      final int userId = _authController.userModel?.id ?? 0;
+
       var postData = {
         'users_id': userId,
         'imageUrl': imageUrl,

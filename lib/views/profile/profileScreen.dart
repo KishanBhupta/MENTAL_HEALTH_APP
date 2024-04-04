@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/authController.dart';
+import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 
 import '../../models/userModel.dart';
 import '../../utils/assetImages.dart';
+import '../post/widgets/postWidget.dart';
 import 'EditProfileScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _showPosts = false;
   final ScrollController scrollController = ScrollController();
   late final AuthController authController; // Define authController variable
+  late final PostController postController; // Define postController variable
   final AppColors appColors = AppColors();
 
   @override
@@ -27,8 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     authController =
         Get.put(AuthController()); // Initialize authController using Get.put
-    authController
-        .fetchUserData(); // Fetch user data when the screen initializes
+    authController.fetchUserData(); // Fetch user data when the screen initializes
+    postController = Get.put(PostController()); // Initialize postController using Get.put
+    _getMorePosts(); // Fetch posts when the screen initializes
   }
 
   @override
@@ -67,12 +71,167 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
             SizedBox(height: 20),
-            // Remaining profile screen UI...
+            // Edit profile button
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: appColors.primaryColor,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            // Box containing options
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: appColors.secondaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _showPosts = true;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: appColors.secondaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Text(
+                          'Thoughts',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _showPosts = false;
+                        });
+                        // Add logic for 'Saved' button
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: appColors.secondaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Text(
+                          'Saved',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _showPosts = false;
+                        });
+                        // Add logic for 'Anonymous' button
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: appColors.secondaryColor,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Text(
+                          'Anonymous',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            // Posts section
+            Visibility(
+              visible: _showPosts,
+              child: GetBuilder<PostController>(
+                builder: (controller) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      controller.page = 1;
+                      await _getMorePosts();
+                    },
+                    child: ListView.builder(
+                      controller: scrollController,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return PostWidget(
+                          post: controller.posts[index],
+                          index: index,
+                        );
+                      },
+                      itemCount: controller.posts.length,
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
   Widget _buildProfileSection(UserModel userModel) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -89,11 +248,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${userModel.firstName ?? ''} ${userModel.lastName ?? ''}', // Display first name and last name
+                '${userModel.firstName ?? ''} ${userModel.lastName ?? ''}',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                '@${userModel.userName ?? ''}', // Provide a default value if userName is null
+                '@${userModel.userName ?? ''}',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
@@ -103,6 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-
-
+  Future<void> _getMorePosts() async {
+    await postController.getPosts();
+  }
 }

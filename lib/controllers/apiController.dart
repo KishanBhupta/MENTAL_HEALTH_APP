@@ -184,4 +184,15 @@ class ApiController {
         options: Options(headers: headers));
     return response;
   }
+
+
+  // Future<Response> fetchPostsByUserId(int? userId) async {
+  //   var headers = {"Accept": accept};
+  //   headers['Authorization'] = (await authToken())!;
+  //   var response = await dio.get(
+  //     '${ApiUrls.getUserPostsPath}/$userId',
+  //     options: Options(headers: headers),
+  //   );
+  //   return response;
+  // }
 }
