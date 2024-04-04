@@ -150,4 +150,12 @@ class ApiController {
     var response = await dio.get("${ApiUrls.deleteUserPostPath}/$postId",options: Options(headers: headers));
     return response;
   }
+
+  // function to search user profile
+  Future<Response> searchUser(Map<String, String> map) async {
+    var headers = <String,dynamic>{"Accept":accept};
+    headers['Authorization'] = (await authToken())!;
+    var response = await dio.post(ApiUrls.searchProfilesPath,options: Options(headers: headers),data: map);
+    return response;
+  }
 }

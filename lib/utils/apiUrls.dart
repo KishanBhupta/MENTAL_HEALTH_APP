@@ -28,6 +28,8 @@ class ApiUrls {
   static String addCommentPath = "$baseUrl/posts/comments/add";
   static String deleteCommentPath = "$baseUrl/posts/comments/delete";
 
+  static String searchProfilesPath = "$baseUrl/users/search";
+
   /*
   * Authentication Api Urls Ends
   * */
