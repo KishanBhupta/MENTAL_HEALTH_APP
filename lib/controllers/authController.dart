@@ -12,9 +12,11 @@ import 'package:mental_helth_wellness/views/mainScreen/mainScreen.dart';
 import '../models/userModel.dart';
 import '../utils/appConst.dart';
 
-class AuthController {
+class AuthController extends GetxController {
 
   UserModel? userModel;
+  Map<String, dynamic>? userData; // Define userData property to store user data
+
 
   // function to login user
   Future<void> login({required String email, required String password}) async {
@@ -65,6 +67,21 @@ class AuthController {
       } else {
         EasyLoading.showToast(error.message??"Something went wrong try again later.");
       }
+    }
+  }
+// Fetch user data from the server
+  // Fetch user data from the server
+  Future<void> fetchUserData() async {
+    try {
+      AppMethods.showLoading(message: "Fetching User Data");
+      api.Response response = await ApiController().getCurrentLoggedInUser();
+      if (response.statusCode == 200) {
+        userModel = UserModel.fromJSON(response.data);
+      }
+    } catch (error) {
+      EasyLoading.showToast("Failed to fetch user data");
+    } finally {
+      AppMethods.dismissLoading();
     }
   }
 
