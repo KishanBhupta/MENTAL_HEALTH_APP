@@ -71,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             padding: EdgeInsets.all(Spacing.getDefaultSpacing(context)),
                             itemBuilder: (context, index) {
                               return Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
