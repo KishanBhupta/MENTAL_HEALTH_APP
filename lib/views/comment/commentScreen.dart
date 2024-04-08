@@ -258,9 +258,9 @@ class _CommentScreenState extends State<CommentScreen> {
     }
   }
 
-  Future _getMoreComments() async {
-    commentsController.page = 2;
-    await commentsController.getComments(id:widget.postId);
-  }
+  // Future _getMoreComments() async {
+  //   commentsController.page = 2;
+  //   await commentsController.getComments(id:widget.postId);
+  // }
 }
 

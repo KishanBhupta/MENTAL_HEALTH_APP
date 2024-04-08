@@ -53,6 +53,8 @@ class AppTextField extends StatelessWidget {
   //suffix and prefix
   final Widget? suffix, prefix, suffixIcon, prefixIcon;
 
+  void Function(String)? onChange;
+
 
 
 
@@ -68,6 +70,7 @@ class AppTextField extends StatelessWidget {
     this.border,
     this.enableBorder,
     this.focusBorder,
+    this.onChange,
     this.errorBorder,
     this.borderRadius,
     this.enableBorderRadius,
@@ -106,11 +109,11 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.prefixIcon, this.maxLength}
       ):assert(
-      ((isConsistentBorderColor != null && consistentBorderColor != null) || (isConsistentBorderColor == null && consistentBorderColor == null))
-          &&
+  ((isConsistentBorderColor != null && consistentBorderColor != null) || (isConsistentBorderColor == null && consistentBorderColor == null))
+      &&
       ((isConsistentBorderRadius!=null && consistentBorderRadius!=null) || (isConsistentBorderRadius==null && consistentBorderRadius==null)
           &&
-      ((isBorderEnabled!=null && borderType!=null) || (isBorderEnabled==null&&borderType==null)))
+          ((isBorderEnabled!=null && borderType!=null) || (isBorderEnabled==null&&borderType==null)))
   );
 
   @override
@@ -124,6 +127,7 @@ class AppTextField extends StatelessWidget {
       obscureText: isPassword??false,
       maxLines: maxLines??1,
       maxLength: maxLength,
+      onChanged: onChange,
       style: TextStyle(
         fontSize: textFontSize,
         fontWeight: textFontWeight,
@@ -141,21 +145,21 @@ class AppTextField extends StatelessWidget {
         isCollapsed: isCollapsed,
         hintText: hintText,
         hintStyle: TextStyle(
-          fontSize: hintFontSize,
-          fontWeight: hintFontWeight,
-          letterSpacing: hintLetterSpacing,
-          wordSpacing: hintWordSpacing,
-          color: hintFontColor??Colors.grey,
-          fontFamily: fontFamily
+            fontSize: hintFontSize,
+            fontWeight: hintFontWeight,
+            letterSpacing: hintLetterSpacing,
+            wordSpacing: hintWordSpacing,
+            color: hintFontColor??Colors.grey,
+            fontFamily: fontFamily
         ),
         labelText: labelText,
         labelStyle: TextStyle(
-          fontSize: labelFontSize,
-          fontWeight: labelFontWeight,
-          letterSpacing: labelLetterSpacing,
-          wordSpacing: labelWordSpacing,
-          color: labelFontColor,
-          fontFamily: fontFamily
+            fontSize: labelFontSize,
+            fontWeight: labelFontWeight,
+            letterSpacing: labelLetterSpacing,
+            wordSpacing: labelWordSpacing,
+            color: labelFontColor,
+            fontFamily: fontFamily
         ),
         border: isBorderEnabled??false ? border : null,
         enabledBorder: isBorderEnabled??false ? enableBorder :null,
@@ -169,107 +173,107 @@ class AppTextField extends StatelessWidget {
   _buildBorders() {
     switch(borderType){
       case BorderType.underlineBorder:
-          border = UnderlineInputBorder(
+        border = UnderlineInputBorder(
             borderRadius: BorderRadius.circular(
               isConsistentBorderRadius ?? false ? consistentBorderRadius! : borderRadius??0,
             ),
             borderSide: BorderSide(
-              color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
             )
-          );
-          enableBorder = UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
-              )
-          );
-          focusBorder = UnderlineInputBorder(
+        );
+        enableBorder = UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
+            )
+        );
+        focusBorder = UnderlineInputBorder(
             borderRadius: BorderRadius.circular(
                 isConsistentBorderRadius ?? false ? consistentBorderRadius! : focusBorderRadius??0
             ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
-              )
-          );
-          errorBorder = UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
-              )
-          );
-          break;
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
+            )
+        );
+        errorBorder = UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
+            )
+        );
+        break;
       case BorderType.rectangleBorder:
-          border = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : borderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
-              )
-          );
-          enableBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
-              )
-          );
-          focusBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : focusBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
-              )
-          );
-          errorBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
-              )
-          );
-          break;
+        border = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : borderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
+            )
+        );
+        enableBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
+            )
+        );
+        focusBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : focusBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
+            )
+        );
+        errorBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
+            )
+        );
+        break;
       case null:
-          border = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : borderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
-              )
-          );
-          enableBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
-              )
-          );
-          focusBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : focusBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
-              )
-          );
-          errorBorder = OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
-              ),
-              borderSide: BorderSide(
-                  color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
-              )
-          );
-          break;
+        border = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : borderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : borderColor??Colors.grey
+            )
+        );
+        enableBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : enableBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : enableBorderColor??Colors.grey
+            )
+        );
+        focusBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : focusBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : focusBorderColor??Colors.grey
+            )
+        );
+        errorBorder = OutlineInputBorder(
+            borderRadius: BorderRadius.circular(
+                isConsistentBorderRadius ?? false ? consistentBorderRadius! : errorBorderRadius??0
+            ),
+            borderSide: BorderSide(
+                color: applyOnlyRadius??false ? Colors.transparent : isConsistentBorderColor??false ? consistentBorderColor! : errorBorderColor??Colors.grey
+            )
+        );
+        break;
     }
   }
 }

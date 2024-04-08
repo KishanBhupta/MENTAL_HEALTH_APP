@@ -174,4 +174,19 @@ class ApiController {
     var response = await dio.post(ApiUrls.searchProfilesPath,options: Options(headers: headers),data: map);
     return response;
   }
+
+  Future<Response> getMyProfilePosts(int userId, int page) async {
+    try {
+      var response = await dio.get('/profile/myProfile/posts', queryParameters: {
+        'id': userId,
+        'page': page,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
 }

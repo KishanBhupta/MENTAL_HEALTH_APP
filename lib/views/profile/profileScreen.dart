@@ -129,9 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          _showPosts = true;
-                        });
+                          postController.getMyProfilePosts(postController.userId as int, 1);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: appColors.secondaryColor,

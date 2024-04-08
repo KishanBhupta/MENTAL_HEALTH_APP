@@ -11,8 +11,9 @@ class Post {
   int? likes;
   int? postStatus;
   int? isAnonymous;
+  int? comments;
   String? createdAt;
-  String? updatedAt;
+  String? updataedAt;
   UserModel? postUser;
   List<PostLike> postLikes = [];
   List<SubSavedPost> postSave = [];
@@ -27,7 +28,8 @@ class Post {
         this.postStatus,
         this.isAnonymous,
         this.createdAt,
-        this.updatedAt});
+        this.comments,
+        this.updataedAt});
 
   Post.fromJson(Map<String, dynamic> json) {
     print("JAIODJAOISJOIASDJOAIS : ${json['post_user']}");
@@ -40,7 +42,8 @@ class Post {
     postStatus = json['postStatus'];
     isAnonymous = json['isAnonymous'];
     createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    updataedAt = json['updated_at'];
+    comments = json['comments'];
     postUser = UserModel.fromJSON(json['post_user']);
   }
 
@@ -55,7 +58,8 @@ class Post {
     data['postStatus'] = postStatus;
     data['isAnonymous'] = isAnonymous;
     data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    data['updated_at'] = updataedAt;
+    data['comments'] = comments;
     return data;
   }
 }
