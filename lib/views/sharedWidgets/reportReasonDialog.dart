@@ -26,79 +26,81 @@ class ReportReasonDialog extends StatelessWidget {
     final commentController = Get.find<CommentsController>();
     final postController = Get.find<PostController>();
 
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      clipBehavior: Clip.hardEdge,
-      surfaceTintColor: Colors.white,
-      backgroundColor: Colors.white,
-      child: Form(
-        key: _formKey,
-        child: Container(
-          color: Colors.white,
-          padding: EdgeInsets.all(Spacing.getDefaultSpacing(context)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.warning_amber_outlined,color: Colors.orange),
-                  const CSpace(width: 8,),
-                  AppText(text: title,fontSize: 16,fontWeight: FontWeight.w600,),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () => Get.back(),
-                    child: const Icon(CupertinoIcons.xmark),
-                  )
-                ],
-              ),
-
-              CSpace(height: Spacing.getDefaultSpacing(context)),
-
-              AppText(text: message),
-
-              CSpace(height: Spacing.getDefaultSpacing(context)),
-
-              AppTextField(
-                controller: reasonController,
-                maxLength: 100,
-                borderType: BorderType.rectangleBorder,
-                isBorderEnabled: true,
-                isDense: true,
-                isConsistentBorderRadius: true,
-                consistentBorderRadius: 15,
-                maxLines: 5,
-                hintText: "Enter Reason",
-                validator: (reason) {
-                  if(reason.toString().isEmpty){
-                    return "Please enter reason to submit report";
-                  }
-                  return null;
-                }
-              ),
-
-              CSpace(height: Spacing.getDefaultSpacing(context)),
-
-              AppButton(text: "Report", onPressed: () async {
-
-                if(_formKey.currentState!.validate()){
-                  switch(reportType){
-                    case ReportType.comment:{
-                      await commentController.reportComment(commentId: data['commentId'],reason:reasonController.text.toString());
+    return SingleChildScrollView(
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        clipBehavior: Clip.hardEdge,
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+        child: Form(
+          key: _formKey,
+          child: Container(
+            color: Colors.white,
+            padding: EdgeInsets.all(Spacing.getDefaultSpacing(context)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.warning_amber_outlined,color: Colors.orange),
+                    const CSpace(width: 8,),
+                    AppText(text: title,fontSize: 16,fontWeight: FontWeight.w600,),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () => Get.back(),
+                      child: const Icon(CupertinoIcons.xmark),
+                    )
+                  ],
+                ),
+      
+                CSpace(height: Spacing.getDefaultSpacing(context)),
+      
+                AppText(text: message),
+      
+                CSpace(height: Spacing.getDefaultSpacing(context)),
+      
+                AppTextField(
+                  controller: reasonController,
+                  maxLength: 100,
+                  borderType: BorderType.rectangleBorder,
+                  isBorderEnabled: true,
+                  isDense: true,
+                  isConsistentBorderRadius: true,
+                  consistentBorderRadius: 15,
+                  maxLines: 5,
+                  hintText: "Enter Reason",
+                  validator: (reason) {
+                    if(reason.toString().isEmpty){
+                      return "Please enter reason to submit report";
                     }
-                    case ReportType.post:
-                      {
-                        await  postController.reportPost(postId: data['postId'],reason:reasonController.text.toString());
-                      }
-                    case ReportType.user:
-                    // TODO: Handle this case.
+                    return null;
                   }
-
-                  Get.back();
-                }
-
-              },width: double.maxFinite,fontWeight: FontWeight.bold)
-            ],
+                ),
+      
+                CSpace(height: Spacing.getDefaultSpacing(context)),
+      
+                AppButton(text: "Report", onPressed: () async {
+      
+                  if(_formKey.currentState!.validate()){
+                    switch(reportType){
+                      case ReportType.comment:{
+                        await commentController.reportComment(commentId: data['commentId'],reason:reasonController.text.toString());
+                      }
+                      case ReportType.post:
+                        {
+                          await  postController.reportPost(postId: data['postId'],reason:reasonController.text.toString());
+                        }
+                      case ReportType.user:
+                      // TODO: Handle this case.
+                    }
+      
+                    Get.back();
+                  }
+      
+                },width: double.maxFinite,fontWeight: FontWeight.bold)
+              ],
+            ),
           ),
         ),
       ),
