@@ -27,6 +27,7 @@ class AuthController extends GetxController {
       userModel = UserModel.fromJSON(response.data['user']);
       await LocalStorage().setStringValue(key: CacheKeys.accessToken, value: response.data['token']);
       AppConst().currentAccessToken = response.data['token'];
+      AppConst.userModel = userModel;
       Get.offAll(()=>const MainScreen());
     }
 
