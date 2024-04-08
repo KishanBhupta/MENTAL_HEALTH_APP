@@ -10,6 +10,7 @@ class SearchQueryController extends GetxController {
 
   // function to search new query
   Future<void> searchNewUsers({required String query}) async {
+    users.clear();
     AppMethods.showLoading(message: "Searching");
 
     try {

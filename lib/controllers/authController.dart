@@ -23,13 +23,29 @@ class AuthController extends GetxController {
     var data = {"email": email, "password": password};
     AppMethods.showLoading(message: "Checking Credentials");
     api.Response response = await ApiController().login(data: data);
-    if(response.statusCode == 200){
-      userModel = UserModel.fromJSON(response.data['user']);
-      await LocalStorage().setStringValue(key: CacheKeys.accessToken, value: response.data['token']);
-      AppConst().currentAccessToken = response.data['token'];
-      AppConst.userModel = userModel;
-      Get.offAll(()=>const MainScreen());
+    try {
+      if (response.statusCode == 200) {
+        userModel = UserModel.fromJSON(response.data['user']);
+        await LocalStorage().setStringValue(
+            key: CacheKeys.accessToken, value: response.data['token']);
+        AppConst().currentAccessToken = response.data['token'];
+        AppConst.userModel = userModel;
+        Get.offAll(() => const MainScreen());
+      }
     }
+    on api.DioException catch(error) {
+    if(error.response != null){
+      if(error.response!.statusCode == 422){
+
+      AppMethods.showToast(message: error.response!.data['message'],isError: true);
+
+      }
+    }
+    else  {
+        AppMethods.showToast(message: error.response!.data['message'],isError: true);
+      }
+    }
+
 
 
     AppMethods.dismissLoading();
@@ -62,6 +78,7 @@ class AuthController extends GetxController {
     } on api.DioException catch(error) {
       if(error.response != null){
         if(error.response!.statusCode == 422){
+          // EasyLoading.showToast(message: error.response!.data['message'],isError: true);
           AppMethods.showToast(message: error.response!.data['message'],isError: true);
         }
       } else {

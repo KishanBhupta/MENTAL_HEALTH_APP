@@ -48,6 +48,22 @@ class ApiController {
     return response;
   }
 
+
+  Future<Response> createPost({
+    required Map<String, dynamic> data,
+  }) async {
+    var headers = {
+      "Accept": accept,
+      "Authorization": await authToken(),
+    };
+    var response = await dio.post(
+      ApiUrls.createPostPath, // Replace with your actual endpoint
+      options: Options(headers: headers),
+      data: data,
+    );
+    return response;
+  }
+
   // function to get posts
   Future<Response> getPosts({required Map<String, dynamic> data}) async {
     // var headers = {"Accept":accept};

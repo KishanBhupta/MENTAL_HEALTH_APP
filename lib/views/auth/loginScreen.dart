@@ -140,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if(_fromKey.currentState!.validate()){
                               await authController.login(email: emailController.text, password: passwordController.text);
                             }
+
                           },
                           text:"Login"
                         )

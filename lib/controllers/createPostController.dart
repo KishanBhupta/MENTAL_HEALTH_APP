@@ -31,7 +31,6 @@ class CreatePostController extends GetxController {
       };
 
       var response = await ApiController().createPost(data: postData);
-
       if (response.statusCode == 200) {
         // If post created successfully, show a toast message
         AppMethods.showToast(message: "Post created successfully");
