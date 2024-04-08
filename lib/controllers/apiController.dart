@@ -185,6 +185,8 @@ class ApiController {
     return response;
   }
 
+  searchUser(Map<String, String> map) {}
+
 
   // Future<Response> fetchPostsByUserId(int? userId) async {
   //   var headers = {"Accept": accept};
