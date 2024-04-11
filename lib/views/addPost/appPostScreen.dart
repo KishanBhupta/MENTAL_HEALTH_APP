@@ -49,7 +49,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 padding: EdgeInsets.symmetric(
                     horizontal: Spacing.getDefaultSpacing(context),
                     vertical: 8),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(

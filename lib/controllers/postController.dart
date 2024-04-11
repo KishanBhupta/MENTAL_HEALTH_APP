@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/apiController.dart';
 import 'package:mental_helth_wellness/models/posts/subSavedPostModal.dart';
@@ -19,7 +19,8 @@ class PostController extends GetxController {
   int page = 1;
   bool hasNext = true;
   Map<String,dynamic> getPostData = {};
-  Map<String,dynamic> userId = {};
+  // final int userId = authController.userModel?.id ?? 0;
+
 
   // function to get posts
 
@@ -204,8 +205,6 @@ class PostController extends GetxController {
     update();
   }
 
-
-  // Function to fetch user's profile posts
   Future<void> getMyProfilePosts(int userId, int page) async {
     AppMethods.showLoading();
     try {
@@ -224,14 +223,15 @@ class PostController extends GetxController {
           // }
         }
       }
-    } on DioException catch (error) {
+    } on DioError catch (error) {
       print("Api Error : $error");
-      Get.offAll(()=>const LoginScreen(),transition: AppAnimations.appNavigationTransition,duration: AppAnimations.appNavigationTransitionDuration);
       // Handle errors as needed
     }
     update();
     AppMethods.dismissLoading();
   }
+
+
 
 
 }
