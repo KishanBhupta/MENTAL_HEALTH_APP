@@ -174,4 +174,24 @@ class ApiController {
     var response = await dio.post(ApiUrls.searchProfilesPath,options: Options(headers: headers),data: map);
     return response;
   }
+
+  // Method to get user's profile posts
+  Future<Response> getMyProfilePosts(int userId, int page) async {
+    try {
+      // var response = await dio.get('/profile/myProfile/posts', queryParameters: {'id': userId,'page': page,});
+      var response = await dio.get(ApiUrls.getMyProfilePostsPath, queryParameters: {'id': userId,'page': page,});
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Future<Response> getMyProfilePosts({required Map<String, dynamic> data}) async {
+  //   // var headers = {"Accept":accept};
+  //   var headers = <String,dynamic>{};
+  //   headers['Authorization'] = (await authToken())!;
+  //   var response = await dio.get(ApiUrls.getPostPath,options: Options(headers: headers),data: data);
+  //   return response;
+  // }
+
 }

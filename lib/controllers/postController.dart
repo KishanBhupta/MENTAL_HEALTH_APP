@@ -19,6 +19,7 @@ class PostController extends GetxController {
   int page = 1;
   bool hasNext = true;
   Map<String,dynamic> getPostData = {};
+  // final int userId = authController.userModel?.id ?? 0;
 
 
   // function to get posts
@@ -203,6 +204,34 @@ class PostController extends GetxController {
     }
     update();
   }
+
+  Future<void> getMyProfilePosts(int userId, int page) async {
+    AppMethods.showLoading();
+    try {
+      var response = await ApiController().getMyProfilePosts(userId, page);
+      if (response.statusCode == 200) {
+        if (response.data != null) {
+          for (var post in response.data['data']) {
+            var data = Post.fromJson(post);
+            // Assuming you have similar logic to handle likes and saves
+            // as in your getPosts() function
+            posts.add(data);
+          }
+          // Check if there's a next page, similar to your existing logic
+          // if (response.data['next_page_url'] == null) {
+          //   hasNext = false;
+          // }
+        }
+      }
+    } on DioError catch (error) {
+      print("Api Error : $error");
+      // Handle errors as needed
+    }
+    update();
+    AppMethods.dismissLoading();
+  }
+
+
 
 
 }
