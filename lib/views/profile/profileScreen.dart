@@ -12,7 +12,7 @@ import '../post/widgets/postWidget.dart';
 import 'EditProfileScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key});
+  const ProfileScreen({super.key,});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -163,15 +163,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Saved',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -186,11 +186,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Anonymous',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style:  TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -239,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
             radius: 50,
             backgroundImage: AssetImage(AssetImages.appLogo),
           ),

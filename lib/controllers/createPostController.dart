@@ -3,10 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/apiController.dart';
 import 'package:mental_helth_wellness/controllers/authController.dart'; // Import the AuthController
+import 'package:mental_helth_wellness/utils/appConst.dart';
 import 'package:mental_helth_wellness/utils/appMethods.dart';
 
 class CreatePostController extends GetxController {
-  final AuthController _authController = Get.find<AuthController>(); // Get the AuthController instance
+  // final AuthController _authController = Get.find<AuthController>(); // Get the AuthController instance
 
   Future<void> createPosts({
     required String title,
@@ -18,10 +19,10 @@ class CreatePostController extends GetxController {
 
     try {
       // Retrieve the userId of the currently logged-in user from AuthController
-      final int userId = _authController.userModel?.id ?? 0;
+      // final int userId = _authController.userModel?.id ?? 0;
 
       var postData = {
-        'users_id': userId,
+        'users_id': AppConst.userModel!.id,
         'imageUrl': imageUrl,
         'postText': title,
         'postDescription': content,

@@ -220,7 +220,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final content = _contentController.text.trim();
     final imageUrl = _pickedImage?.path ?? ""; // Use picked image path as imageUrl
 
-    if (title.isNotEmpty && content.isNotEmpty) {
+    if (title.isNotEmpty || content.isNotEmpty) {
       CreatePostController().createPosts(
         title: title,
         content: content,

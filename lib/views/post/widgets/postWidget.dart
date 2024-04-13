@@ -126,7 +126,7 @@ class PostWidget extends StatelessWidget {
           const CSpace(height: 8),
 
           // thought
-          AppText(text: post.postText.toString()),
+         post.postText!= "" ? AppText(text: post.postText.toString()) : const CSpace(),
 
           const CSpace(height: 8),
 
@@ -136,7 +136,7 @@ class PostWidget extends StatelessWidget {
           const CSpace(height: 8),
 
           // image
-          post.imageUrl!=null ? Center(
+          (post.imageUrl!=null && post.imageUrl != "" )   ? Center(
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
