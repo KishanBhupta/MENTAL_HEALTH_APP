@@ -9,6 +9,7 @@ import 'package:mental_helth_wellness/utils/appMethods.dart';
 class CreatePostController extends GetxController {
   // final AuthController _authController = Get.find<AuthController>(); // Get the AuthController instance
 
+
   Future<void> createPosts({
     required String title,
     required String content,
