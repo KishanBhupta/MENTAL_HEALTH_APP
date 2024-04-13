@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +7,7 @@ import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/assetImages.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
-
-import '../../controllers/authController.dart';
+import 'package:mental_helth_wellness/utils/appMethods.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -31,11 +29,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const AppText(
-            text: "Add Post", fontSize: 20, fontWeight: FontWeight.w800),
+          text: "Add Post",
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+              horizontal: Spacing.getDefaultSpacing(context),
+              vertical: 8,
+            ),
             child: ElevatedButton(
               onPressed: _createPost,
               style: ElevatedButton.styleFrom(
@@ -47,20 +50,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: Spacing.getDefaultSpacing(context),
-                    vertical: 8),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Post',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                  ],
+                  horizontal: Spacing.getDefaultSpacing(context),
+                  vertical: 8,
+                ),
+                child: const Text(
+                  'Post',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
@@ -72,7 +70,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
         children: [
           Container(
             padding: EdgeInsets.symmetric(
-                horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+              horizontal: Spacing.getDefaultSpacing(context),
+              vertical: 8,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,12 +105,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             ),
                           ),
                           contentPadding: EdgeInsets.symmetric(
-                              horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+                            horizontal: Spacing.getDefaultSpacing(context),
+                            vertical: 8,
+                          ),
                           filled: true,
                         ),
-                        maxLines: 1, // Set max lines to 1
+                        maxLines: 1,
                         keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline, // Allow new line
+                        textInputAction: TextInputAction.newline,
                       ),
                     ],
                   ),
@@ -138,15 +140,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ),
               contentPadding: EdgeInsets.symmetric(
-                  horizontal: Spacing.getDefaultSpacing(context),
-                  vertical: 8),
+                horizontal: Spacing.getDefaultSpacing(context),
+                vertical: 8,
+              ),
               filled: true,
             ),
             maxLines: null,
             keyboardType: TextInputType.multiline,
           ),
           SizedBox(height: 20),
-          if (_pickedImage != null) // Display picked image if available
+          if (_pickedImage != null)
             Container(
               height: 200,
               width: double.infinity,
@@ -159,15 +162,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ElevatedButton(
             onPressed: _openImagePicker,
             style: ElevatedButton.styleFrom(
-              // Set background color to transparent
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
                 side: BorderSide(
-                  color: appColors.primaryColor, // Border color
+                  color: appColors.primaryColor,
                   width: 1,
                 ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20), // Adjust padding as needed
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               minimumSize: Size(double.infinity, 50),
             ),
             child: Row(
@@ -218,19 +220,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void _createPost() {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
-    final imageUrl = _pickedImage?.path ?? ""; // Use picked image path as imageUrl
 
     if (title.isNotEmpty && content.isNotEmpty) {
       CreatePostController().createPosts(
         title: title,
         content: content,
-        imageUrl: imageUrl,
+        imageFile: _pickedImage != null ? File(_pickedImage!.path) : null,
         isAnonymous: isAnonymous,
       );
       setState(() {
         _titleController.clear();
         _contentController.clear();
-        _pickedImage = null; // Clear the picked image
+        _pickedImage = null;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -240,7 +241,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
       );
     }
   }
-
 
   void _toggleAnonymous() {
     setState(() {

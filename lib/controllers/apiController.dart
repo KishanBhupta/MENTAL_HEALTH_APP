@@ -5,6 +5,8 @@ import 'package:mental_helth_wellness/utils/cacheKeys.dart';
 import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import 'package:dio/dio.dart' as dio;
+
 class ApiController {
 
   static Dio dio = Dio()
@@ -48,21 +50,50 @@ class ApiController {
     return response;
   }
 
+  // Future<dio.Response> createPost({
+  //   required dio.FormData data, // Change parameter type to dio.FormData
+  // }) async {
+  //   var headers = {
+  //     "Accept": accept,
+  //     "Authorization": await authToken(),
+  //   };
+  //   var response = await dio.post( // Use dio.dio.post to avoid conflicts
+  //     ApiUrls.createPostPath,
+  //     options: dio.Options(headers: headers),
+  //     data: data,
+  //   );
+  //   return response;
+  // }
 
   Future<Response> createPost({
-    required Map<String, dynamic> data,
+    required FormData data,
   }) async {
     var headers = {
       "Accept": accept,
       "Authorization": await authToken(),
     };
     var response = await dio.post(
-      ApiUrls.createPostPath, // Replace with your actual endpoint
+      ApiUrls.createPostPath,
       options: Options(headers: headers),
       data: data,
     );
     return response;
   }
+
+  // Future<Response> createPost({
+  //   required Map<String, dynamic> data,
+  // }) async {
+  //   var headers = {
+  //     "Accept": accept,
+  //     "Authorization": await authToken(),
+  //   };
+  //   var response = await dio.post(
+  //     ApiUrls.createPostPath, // Replace with your actual endpoint
+  //     options: Options(headers: headers),
+  //     data: data,
+  //   );
+  //   return response;
+  // }
 
   // function to get posts
   Future<Response> getPosts({required Map<String, dynamic> data}) async {
@@ -178,13 +209,29 @@ class ApiController {
   // Method to get user's profile posts
   Future<Response> getMyProfilePosts(int userId, int page) async {
     try {
-      // var response = await dio.get('/profile/myProfile/posts', queryParameters: {'id': userId,'page': page,});
       var response = await dio.get(ApiUrls.getMyProfilePostsPath, queryParameters: {'id': userId,'page': page,});
       return response;
     } catch (error) {
       throw error;
     }
   }
+
+  // updateUserProfile({required Map<String, dynamic> data}) {}
+  Future<Response> updateUserProfile({
+    required Map<String, dynamic> data,
+  }) async {
+    var headers = {
+      "Accept": accept,
+      "Authorization": await authToken(),
+    };
+    var response = await dio.post(
+      ApiUrls.updateUserProfilePath, // Replace with your actual endpoint
+      options: Options(headers: headers),
+      data: data,
+    );
+    return response;
+  }
+
 
   // Future<Response> getMyProfilePosts({required Map<String, dynamic> data}) async {
   //   // var headers = {"Accept":accept};

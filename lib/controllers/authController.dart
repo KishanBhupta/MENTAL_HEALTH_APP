@@ -86,4 +86,33 @@ class AuthController extends GetxController {
     }
   }
 
+  // Add this function to the AuthController
+  Future<void> updateUserProfile({
+    required int id,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+  }) async {
+    try {
+      Map<String, dynamic> data = {
+        'id': id,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phoneNumber': phoneNumber,
+      };
+      final response = await ApiController().updateUserProfile(data: data);
+      if (response.statusCode == 200) {
+        // Update userModel with the updated data
+        userModel = UserModel.fromJSON(response.data['user']);
+        // Show success message or handle success scenario
+      } else {
+        // Handle error scenario
+      }
+    } catch (error) {
+      // Handle error scenario
+    }
+  }
+
 }
