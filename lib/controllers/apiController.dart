@@ -4,7 +4,7 @@ import 'package:mental_helth_wellness/utils/apiUrls.dart';
 import 'package:mental_helth_wellness/utils/cacheKeys.dart';
 import 'package:mental_helth_wellness/utils/localStorage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
+import 'dart:convert';
 import 'package:dio/dio.dart' as dio;
 
 class ApiController {
@@ -50,20 +50,6 @@ class ApiController {
     return response;
   }
 
-  // Future<dio.Response> createPost({
-  //   required dio.FormData data, // Change parameter type to dio.FormData
-  // }) async {
-  //   var headers = {
-  //     "Accept": accept,
-  //     "Authorization": await authToken(),
-  //   };
-  //   var response = await dio.post( // Use dio.dio.post to avoid conflicts
-  //     ApiUrls.createPostPath,
-  //     options: dio.Options(headers: headers),
-  //     data: data,
-  //   );
-  //   return response;
-  // }
 
   Future<Response> createPost({
     required FormData data,
@@ -79,21 +65,6 @@ class ApiController {
     );
     return response;
   }
-
-  // Future<Response> createPost({
-  //   required Map<String, dynamic> data,
-  // }) async {
-  //   var headers = {
-  //     "Accept": accept,
-  //     "Authorization": await authToken(),
-  //   };
-  //   var response = await dio.post(
-  //     ApiUrls.createPostPath, // Replace with your actual endpoint
-  //     options: Options(headers: headers),
-  //     data: data,
-  //   );
-  //   return response;
-  // }
 
   // function to get posts
   Future<Response> getPosts({required Map<String, dynamic> data}) async {
@@ -209,31 +180,110 @@ class ApiController {
   // Method to get user's profile posts
   Future<Response> getMyProfilePosts(int userId, int page) async {
     try {
-      var response = await dio.get(ApiUrls.getMyProfilePostsPath, queryParameters: {'id': userId,'page': page,});
+      var response = await dio.get(ApiUrls.getMyProfilePostsPath, queryParameters: {'id': userId, 'page': page});
       return response;
     } catch (error) {
       throw error;
     }
   }
 
-  // updateUserProfile({required Map<String, dynamic> data}) {}
+
+// updateUserProfile({required Map<String, dynamic> data}) {}
   Future<Response> updateUserProfile({
-    required Map<String, dynamic> data,
+    required int id,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
   }) async {
     var headers = {
       "Accept": accept,
       "Authorization": await authToken(),
     };
+    var formData = {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+    };
     var response = await dio.post(
       ApiUrls.updateUserProfilePath, // Replace with your actual endpoint
       options: Options(headers: headers),
-      data: data,
+      data: formData,
     );
     return response;
   }
+  //
+  Future<Response> changePassword({required int id, required String oldPassword, required String newPassword}) async {
+    try {
+      var headers = {
+        "Accept": accept,
+        "Authorization": await authToken(),
+      };
+
+      // Validate the new password format
+      if (!_isValidPasswordFormat(newPassword)) {
+        throw Exception('New password must be 6-8 characters long and contain at least one uppercase letter and one number');
+      }
+
+      // Create the request body
+      var requestBody = {
+        'id': id,
+        'oldPassword': oldPassword,
+        'password': newPassword,
+      };
+
+      // Make the API call
+      var response = await dio.post(
+        ApiUrls.changePasswordPath,
+        options: Options(headers: headers),
+        data: requestBody,
+      );
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  bool _isValidPasswordFormat(String password) {
+    // Password must be 6-8 characters long and contain at least one uppercase letter and one number
+    final RegExp passwordRegExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{6,8}$');
+    return passwordRegExp.hasMatch(password);
+  }
+
+  Future<Response> storeFeedback({
+    required int userId,
+    required String feedbackData,
+  }) async {
+    try {
+      var headers = {
+        "Accept": accept,
+        "Access Token": await authToken(),
+        "Content-Type": "application/json",
+      };
+
+      var requestBody = {
+        'users_id': userId,
+        'feedbackData': feedbackData,
+      };
+
+      var response = await dio.post(
+        ApiUrls.saveFeedbackPath,
+        options: Options(headers: headers),
+        data: jsonEncode(requestBody),
+      );
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
-  // Future<Response> getMyProfilePosts({required Map<String, dynamic> data}) async {
+
+// Future<Response> getMyProfilePosts({required Map<String, dynamic> data}) async {
   //   // var headers = {"Accept":accept};
   //   var headers = <String,dynamic>{};
   //   headers['Authorization'] = (await authToken())!;

@@ -3,36 +3,38 @@ import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/authController.dart';
 import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
+import 'package:mental_helth_wellness/models/userModel.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 
-import '../../models/userModel.dart';
 import '../../utils/assetImages.dart';
 import '../post/widgets/postWidget.dart';
 import 'EditProfileScreen.dart';
+import 'Setting.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
+
+  void fetchUserData() {
+
+  }
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _showPosts = false;
   final ScrollController scrollController = ScrollController();
-  late final AuthController authController; // Define authController variable
-  late final PostController postController; // Define postController variable
+  final AuthController authController = Get.find();
+  final PostController postController = Get.find();
   final AppColors appColors = AppColors();
 
   @override
   void initState() {
     super.initState();
-    authController =
-        Get.put(AuthController()); // Initialize authController using Get.put
-    authController.fetchUserData(); // Fetch user data when the screen initializes
-    postController = Get.put(PostController()); // Initialize postController using Get.put
-    _getMorePosts(); // Fetch posts when the screen initializes
+    authController.fetchUserData();
+    _getMorePosts();
   }
 
   @override
@@ -45,13 +47,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
-            child: IconButton(
+            child:IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
                 // Add logic to navigate to the settings screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                );
               },
               iconSize: 35,
             ),
+
           ),
         ],
       ),
@@ -60,18 +67,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            // Updated profile section
             GetBuilder<AuthController>(
               builder: (controller) {
                 if (controller.userModel != null) {
                   return _buildProfileSection(controller.userModel!);
                 } else {
-                  return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+                  return CircularProgressIndicator();
                 }
               },
             ),
             SizedBox(height: 20),
-            // Edit profile button
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
@@ -81,10 +86,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(),
                   ElevatedButton(
                     onPressed: () {
+                      int userId = authController.userModel?.id ?? 0;
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EditProfileScreen()),
-                      );
+                        MaterialPageRoute(builder: (context) =>
+                            EditProfileScreen(userId: userId)),
+                      ).then((_) {
+                        fetchUserData(
+                            context); // Refresh user data when returning from EditProfileScreen
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: appColors.primaryColor,
@@ -95,7 +105,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+                          horizontal: Spacing.getDefaultSpacing(context),
+                          vertical: 8),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -115,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-            // Box containing options
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(5),
@@ -128,8 +138,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                          postController.getMyProfilePosts(postController.userId as int, 1);
+                      onPressed: () async {
+                        await postController.getMyProfilePosts();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: appColors.secondaryColor,
@@ -146,6 +156,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
+
+
                     SizedBox(width: 5),
                     ElevatedButton(
                       onPressed: () {
@@ -165,7 +177,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(2),
                         child: Text(
                           'Saved',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -188,7 +201,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(2),
                         child: Text(
                           'Anonymous',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -197,7 +211,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 20),
-            // Posts section
             Visibility(
               visible: _showPosts,
               child: GetBuilder<PostController>(
@@ -210,7 +223,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: ListView.builder(
                       controller: scrollController,
                       padding: EdgeInsets.symmetric(
-                          horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
+                          horizontal: Spacing.getDefaultSpacing(context),
+                          vertical: 8),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return PostWidget(
@@ -263,4 +277,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _getMorePosts() async {
     await postController.getPosts();
   }
+
+
+// Define fetchUserData method
+  void fetchUserData(BuildContext context) {
+    final AuthController authController = Get.find();
+    authController.fetchUserData().then((_) {
+      // After fetching the data, trigger a rebuild of the widget
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
 }
+

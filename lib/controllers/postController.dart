@@ -2,10 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:mental_helth_wellness/controllers/apiController.dart';
+import 'package:mental_helth_wellness/controllers/authController.dart';
 import 'package:mental_helth_wellness/models/posts/subSavedPostModal.dart';
 import 'package:mental_helth_wellness/utils/appMethods.dart';
 import 'package:mental_helth_wellness/utils/appString.dart';
-
 import '../models/posts/postLikeModal.dart';
 import '../models/posts/postModel.dart';
 import '../utils/appAnimations.dart';
@@ -19,6 +19,8 @@ class PostController extends GetxController {
   int page = 1;
   bool hasNext = true;
   Map<String,dynamic> getPostData = {};
+
+  final AuthController authController = Get.find();
   // final int userId = authController.userModel?.id ?? 0;
 
 
@@ -204,23 +206,49 @@ class PostController extends GetxController {
     }
     update();
   }
+  //
+  // Future<void> getMyProfilePosts(int userId, int page) async {
+  //   AppMethods.showLoading();
+  //   try {
+  //     // Clear existing posts before fetching new ones
+  //     posts.clear(); // Assuming 'posts' is the list where you store the fetched posts
+  //
+  //     var response = await ApiController().getMyProfilePosts(userId, page);
+  //     if (response.statusCode == 200) {
+  //       if (response.data != null) {
+  //         for (var post in response.data['data']) {
+  //           var data = Post.fromJson(post);
+  //           // Assuming you have similar logic to handle likes and saves
+  //           // as in your getPosts() function
+  //           posts.add(data);
+  //         }
+  //         // Check if there's a next page, similar to your existing logic
+  //         // if (response.data['next_page_url'] == null) {
+  //         //   hasNext = false;
+  //         // }
+  //       }
+  //     }
+  //   } on DioError catch (error) {
+  //     print("Api Error : $error");
+  //     // Handle errors as needed
+  //   }
+  //   update();
+  //   AppMethods.dismissLoading();
+  // }
 
-  Future<void> getMyProfilePosts(int userId, int page) async {
+  Future<void> getMyProfilePosts() async {
     AppMethods.showLoading();
     try {
-      var response = await ApiController().getMyProfilePosts(userId, page);
+      // Clear existing posts before fetching new ones
+      posts.clear();
+      int userId = authController.userModel?.id ?? 0;
+      var response = await ApiController().getMyProfilePosts(userId, 1); // Assuming page 1 for initial load
       if (response.statusCode == 200) {
         if (response.data != null) {
           for (var post in response.data['data']) {
             var data = Post.fromJson(post);
-            // Assuming you have similar logic to handle likes and saves
-            // as in your getPosts() function
             posts.add(data);
           }
-          // Check if there's a next page, similar to your existing logic
-          // if (response.data['next_page_url'] == null) {
-          //   hasNext = false;
-          // }
         }
       }
     } on DioError catch (error) {
@@ -230,6 +258,9 @@ class PostController extends GetxController {
     update();
     AppMethods.dismissLoading();
   }
+
+
+
 
 
 

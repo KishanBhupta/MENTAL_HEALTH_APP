@@ -95,14 +95,13 @@ class AuthController extends GetxController {
     required String phoneNumber,
   }) async {
     try {
-      Map<String, dynamic> data = {
-        'id': id,
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'phoneNumber': phoneNumber,
-      };
-      final response = await ApiController().updateUserProfile(data: data);
+      final response = await ApiController().updateUserProfile(
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber,
+      );
       if (response.statusCode == 200) {
         // Update userModel with the updated data
         userModel = UserModel.fromJSON(response.data['user']);
@@ -114,5 +113,7 @@ class AuthController extends GetxController {
       // Handle error scenario
     }
   }
+
+
 
 }

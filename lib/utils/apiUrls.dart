@@ -32,6 +32,8 @@ class ApiUrls {
   static String searchProfilesPath = "$baseUrl/users/search";
 
   static String updateUserProfilePath = "$baseUrl/profile/myProfile/updateMyProfile";
+  static String changePasswordPath = "$baseUrl/profile/myProfile/changePassword";
+  static String saveFeedbackPath = "$baseUrl/feedBack/storeFeedback";
 
   /*
   * Authentication Api Urls Ends
