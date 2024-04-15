@@ -218,19 +218,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void _createPost() {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
-    final imageUrl = _pickedImage?.path ?? ""; // Use picked image path as imageUrl
 
-    if (title.isNotEmpty || content.isNotEmpty) {
+    if (title.isNotEmpty && content.isNotEmpty) {
       CreatePostController().createPosts(
         title: title,
         content: content,
-        imageUrl: imageUrl,
+        imageFile: _pickedImage != null ? File(_pickedImage!.path) : null,
         isAnonymous: isAnonymous,
       );
       setState(() {
         _titleController.clear();
         _contentController.clear();
-        _pickedImage = null; // Clear the picked image
+        _pickedImage = null;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -240,7 +239,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
       );
     }
   }
-
 
   void _toggleAnonymous() {
     setState(() {

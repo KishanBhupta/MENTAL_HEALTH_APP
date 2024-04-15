@@ -4,6 +4,7 @@ import 'package:mental_helth_wellness/controllers/authController.dart';
 import 'package:mental_helth_wellness/controllers/postController.dart';
 import 'package:mental_helth_wellness/customWidgets/appText.dart';
 import 'package:mental_helth_wellness/utils/appColors.dart';
+import 'package:mental_helth_wellness/utils/appConst.dart';
 import 'package:mental_helth_wellness/utils/spacing.dart';
 
 import '../../models/userModel.dart';
@@ -46,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
             child: IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 // Add logic to navigate to the settings screen
               },
@@ -58,19 +59,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
+          children: <Widget>[
+            const SizedBox(height: 20),
             // Updated profile section
             GetBuilder<AuthController>(
               builder: (controller) {
                 if (controller.userModel != null) {
                   return _buildProfileSection(controller.userModel!);
                 } else {
-                  return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+                  return const CircularProgressIndicator(); // Show loading indicator while data is being fetched
                 }
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Edit profile button
             Padding(
               padding: EdgeInsets.symmetric(
@@ -96,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: Spacing.getDefaultSpacing(context), vertical: 8),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
@@ -114,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Box containing options
             Container(
               width: double.infinity,
@@ -140,15 +141,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
+                      child: const Padding(
+                        padding: EdgeInsets.all(2),
                         child: Text(
                           'Thoughts',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -198,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Posts section
             Visibility(
               visible: _showPosts,
@@ -243,17 +244,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             radius: 50,
             backgroundImage: AssetImage(AssetImages.appLogo),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${userModel.firstName ?? ''} ${userModel.lastName ?? ''}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                '${AppConst.userModel!.firstName ?? ''} ${AppConst.userModel!.lastName ?? ''}',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                '@${userModel.userName ?? ''}',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                '@${AppConst.userModel!.userName ?? ''}',
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
           ),
